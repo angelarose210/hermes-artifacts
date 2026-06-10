@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Limitless Pickleball — Long-Form Playbook</title>
+<style>
+  :root {
+    --bg: #0a1628;
+    --surface: #13203a;
+    --surface2: #1a2c4d;
+    --border: #26395c;
+    --lime: #7ddf64;
+    --cyan: #00b4d8;
+    --white: #e8edf3;
+    --muted: #8b9fae;
+    --green: #7ddf64;
+    --amber: #ffc34d;
+    --red: #ff6b6b;
+    --jeff: #00b4d8;
+    --editor: #7ddf64;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    line-height: 1.7;
+  }
+
+  /* Scroll progress bar */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--lime), var(--cyan));
+    z-index: 9999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(125,223,100,0.5);
+  }
+
+  /* Back to top */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    width: 46px; height: 46px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--lime);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s, background 0.2s, border-color 0.2s;
+    z-index: 100;
+  }
+  .back-to-top.show { opacity: 1; transform: translateY(0); }
+  .back-to-top:hover { background: rgba(125,223,100,0.12); border-color: var(--lime); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0a1628 0%, #102a52 50%, #0a1628 100%);
+    border-bottom: 2px solid var(--lime);
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(125,223,100,0.07) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(0,180,216,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero .kicker {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--lime);
+    margin-bottom: 0.7rem;
+    animation: heroBadgeIn 0.8s ease-out both;
+  }
+  .hero h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    animation: heroTitleIn 1s ease-out both;
+  }
+  .hero h1 span { color: var(--lime); }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1.02rem;
+    max-width: 620px;
+    margin: 0 auto;
+    animation: heroSubIn 1s ease-out 0.3s both;
+  }
+  .hero .meta-row {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.3rem;
+    animation: heroBadgeIn 0.8s ease-out 0.6s both;
+  }
+  .hero .badge {
+    display: inline-block;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    font-size: 0.76rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .hero .badge strong { color: var(--white); }
+
+  @keyframes heroTitleIn { from { opacity:0; transform:translateY(-30px);} to {opacity:1; transform:translateY(0);} }
+  @keyframes heroSubIn { from { opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+  @keyframes heroBadgeIn { from { opacity:0; transform:scale(0.85);} to {opacity:1; transform:scale(1);} }
+
+  /* Layout */
+  .container {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Role filter toolbar */
+  .role-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.3rem;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0.6rem;
+    z-index: 50;
+    backdrop-filter: blur(6px);
+  }
+  .role-bar .role-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-right: 0.2rem;
+  }
+  .role-btn {
+    font-family: var(--font);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.4rem 0.95rem;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .role-btn:hover { border-color: var(--muted); color: var(--white); }
+  .role-btn.active[data-role="both"] { background: var(--white); color: var(--bg); border-color: var(--white); }
+  .role-btn.active[data-role="jeff"] { background: var(--jeff); color: var(--bg); border-color: var(--jeff); }
+  .role-btn.active[data-role="editor"] { background: var(--editor); color: var(--bg); border-color: var(--editor); }
+  .role-hint {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* Owner tags */
+  .owner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 5px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .owner-jeff { background: rgba(0,180,216,0.15); color: var(--cyan); border: 1px solid rgba(0,180,216,0.4); }
+  .owner-editor { background: rgba(125,223,100,0.15); color: var(--lime); border: 1px solid rgba(125,223,100,0.4); }
+
+  /* Role-filtered item dimming */
+  .role-item { transition: opacity 0.3s ease, filter 0.3s ease; }
+  body[data-filter="jeff"] .role-item.editor-only,
+  body[data-filter="editor"] .role-item.jeff-only {
+    display: none;
+  }
+
+  /* Score badges */
+  .score-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .score-high { background: rgba(125,223,100,0.15); color: var(--lime); border: 1px solid rgba(125,223,100,0.4); }
+  .score-med  { background: rgba(255,195,77,0.13); color: var(--amber); border: 1px solid rgba(255,195,77,0.4); }
+  .score-low  { background: rgba(255,107,107,0.13); color: var(--red); border: 1px solid rgba(255,107,107,0.4); }
+  .score-ref  { background: rgba(0,180,216,0.12); color: var(--cyan); border: 1px solid rgba(0,180,216,0.4); }
+
+  /* Section titles */
+  h2.section-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  h2.section-title .icon { font-size: 1.4rem; line-height: 1; }
+
+  /* ACTION PLAN */
+  .action-plan-section { margin-bottom: 2.8rem; }
+  .ap-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .ap-head .icon { font-size: 1.5rem; }
+  .ap-head h2 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .section-desc { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.3rem; }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .action-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--lime);
+    border-radius: 10px;
+    padding: 1.15rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(125,223,100,0.1);
+    border-color: rgba(125,223,100,0.4);
+  }
+  .action-card .action-top { display: flex; align-items: center; gap: 0.55rem; }
+  .action-card .action-num {
+    width: 27px; height: 27px;
+    background: var(--lime);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 0.82rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-card .action-icon { font-size: 1.3rem; line-height: 1; }
+  .action-card .action-top .score-badge { margin-left: auto; }
+  .action-card h4 { font-size: 1.02rem; margin: 0; color: var(--white); }
+  .action-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; margin: 0; }
+  .action-card .owners { display: flex; gap: 0.4rem; margin-top: 0.2rem; flex-wrap: wrap; }
+
+  /* Collapsible sections */
+  section.block { margin-bottom: 1.1rem; }
+  .section-details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.25s ease;
+  }
+  .section-details[open] { border-color: rgba(125,223,100,0.25); }
+  .section-details > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.1rem 1.4rem;
+    transition: background 0.2s ease;
+  }
+  .section-details > summary::-webkit-details-marker { display: none; }
+  .section-details > summary:hover { background: var(--surface2); }
+  .section-details > summary .section-title { flex: 1; }
+  .section-details > summary .score-badge { flex-shrink: 0; }
+  .section-details > summary::after {
+    content: '▸';
+    color: var(--lime);
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .section-details[open] > summary { border-bottom: 1px solid var(--border); }
+  .section-details[open] > summary::after { transform: rotate(90deg); }
+  .details-body { padding: 1.3rem 1.4rem 1.6rem; }
+  .details-body > *:first-child { margin-top: 0; }
+
+  h3 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin: 1.6rem 0 0.7rem;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Hero diagnosis statement */
+  .diagnosis {
+    background: linear-gradient(135deg, rgba(125,223,100,0.08), rgba(0,180,216,0.05));
+    border-left: 4px solid var(--lime);
+    border-radius: 10px;
+    padding: 1.6rem 1.8rem;
+    font-size: 1.18rem;
+    line-height: 1.6;
+    color: var(--white);
+  }
+  .diagnosis strong { color: var(--lime); }
+  .diagnosis em { color: var(--cyan); font-style: italic; }
+  .diagnosis .punch {
+    display: block;
+    margin-top: 0.9rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--lime);
+    letter-spacing: -0.01em;
+  }
+
+  /* Cards & callouts */
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .callout {
+    padding: 1.1rem 1.4rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  .callout-lime { background: rgba(125,223,100,0.07); border-left: 3px solid var(--lime); }
+  .callout-cyan { background: rgba(0,180,216,0.07); border-left: 3px solid var(--cyan); }
+  .callout-amber { background: rgba(255,195,77,0.07); border-left: 3px solid var(--amber); }
+  .callout strong { color: var(--white); }
+  .callout h4 { font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--white); }
+
+  p.body { margin-bottom: 0.9rem; font-size: 0.95rem; }
+  p.body strong { color: var(--white); }
+  p.body em { color: var(--cyan); font-style: italic; }
+
+  /* Two-column split */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin: 1.2rem 0;
+    position: relative;
+  }
+  .split-col { padding: 1.4rem 1.5rem; }
+  .split-col.instructional { background: linear-gradient(180deg, rgba(0,180,216,0.1), rgba(0,180,216,0.02)); border-right: 1px solid var(--border); }
+  .split-col.paddle { background: linear-gradient(180deg, rgba(125,223,100,0.1), rgba(125,223,100,0.02)); }
+  .split-col h4 {
+    font-size: 1.05rem;
+    margin-bottom: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .split-col.instructional h4 { color: var(--cyan); }
+  .split-col.paddle h4 { color: var(--lime); }
+  .split-row { padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.88rem; }
+  .split-row:last-child { border-bottom: none; }
+  .split-row .k { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.15rem; }
+  .split-row .v { color: var(--white); font-weight: 600; }
+  .split-row .v.big { font-size: 1.25rem; font-weight: 800; }
+  .split-divider {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 38px; height: 38px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--muted);
+    z-index: 2;
+  }
+
+  /* Funnel */
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 1.4rem 0;
+  }
+  .funnel-step {
+    text-align: center;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    color: var(--bg);
+    font-weight: 700;
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  .funnel-step:hover { transform: scale(1.02); }
+  .funnel-step .fl-title { font-size: 0.98rem; }
+  .funnel-step .fl-sub { font-size: 0.74rem; font-weight: 600; opacity: 0.85; }
+  .funnel-step.s1 { width: 100%; background: linear-gradient(90deg, var(--cyan), #2cc8e8); }
+  .funnel-step.s2 { width: 78%; background: linear-gradient(90deg, #3cc9b0, #5cd49a); color: var(--bg); }
+  .funnel-step.s3 { width: 56%; background: linear-gradient(90deg, #8ad96e, var(--lime)); }
+  .funnel-step.s4 { width: 36%; background: linear-gradient(90deg, var(--lime), #b6f08a); }
+  .funnel-arrow { color: var(--muted); font-size: 1rem; line-height: 1; }
+
+  /* Chart */
+  .chart-wrap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem 1.3rem 1rem;
+    margin: 1.2rem 0;
+  }
+  .chart-canvas-holder { position: relative; height: 340px; }
+  .chart-legend {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .chart-legend .dot { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+  .cliff-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 0.8rem; margin-top: 1.2rem; }
+  .cliff-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    font-size: 0.86rem;
+  }
+  .cliff-note.rewind { border-left-color: var(--lime); }
+  .cliff-note .ct { font-family: var(--mono); font-size: 0.78rem; color: var(--red); font-weight: 700; display: block; margin-bottom: 0.25rem; }
+  .cliff-note.rewind .ct { color: var(--lime); }
+
+  /* Bullet lists for playbooks */
+  ul.tips { list-style: none; margin: 0.4rem 0; padding: 0; }
+  ul.tips > li {
+    position: relative;
+    padding: 0.6rem 0 0.6rem 1.6rem;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--border);
+  }
+  ul.tips > li:last-child { border-bottom: none; }
+  ul.tips > li::before {
+    content: '▸';
+    position: absolute;
+    left: 0; top: 0.6rem;
+    color: var(--lime);
+    font-weight: 700;
+  }
+  ul.tips > li.jeff-only::before { color: var(--cyan); }
+  ul.tips > li strong { color: var(--white); }
+  ul.tips > li em { color: var(--cyan); font-style: italic; }
+
+  .playbook-role-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0.3rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .playbook-role-head.jeff { color: var(--cyan); }
+  .playbook-role-head.editor { color: var(--lime); }
+
+  /* Cadence strip */
+  .cadence {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin: 1.2rem 0;
+  }
+  .cadence-day {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem 0.4rem;
+    text-align: center;
+    min-height: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .cadence-day .dow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  .cadence-pill {
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 0.2rem 0.3rem;
+    border-radius: 4px;
+    line-height: 1.2;
+  }
+  .pill-long { background: rgba(0,180,216,0.2); color: var(--cyan); }
+  .pill-paddle { background: rgba(125,223,100,0.2); color: var(--lime); }
+  .pill-short { background: rgba(255,195,77,0.18); color: var(--amber); }
+
+  /* Scorecard grade cards */
+  .grade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin: 1.2rem 0;
+  }
+  .grade-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .grade-card .dim { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.6rem; }
+  .grade-card .grade {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.6rem;
+    display: inline-block;
+  }
+  .grade-card .why { font-size: 0.82rem; color: var(--muted); line-height: 1.45; text-align: left; }
+  .grade-a { color: var(--green); }
+  .grade-b { color: var(--green); }
+  .grade-c { color: var(--amber); }
+  .grade-card.tier-a { border-top: 3px solid var(--green); }
+  .grade-card.tier-b { border-top: 3px solid var(--green); }
+  .grade-card.tier-c { border-top: 3px solid var(--amber); }
+
+  /* Tables */
+  .table-scroll { overflow-x: auto; margin: 1rem 0; -webkit-overflow-scrolling: touch; }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 620px;
+  }
+  table.data th {
+    text-align: left;
+    padding: 0.65rem 0.8rem;
+    border-bottom: 2px solid var(--border);
+    color: var(--lime);
+    font-weight: 700;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  table.data th:hover { color: var(--white); }
+  table.data th .arrow { opacity: 0.4; font-size: 0.7rem; }
+  table.data th.sorted .arrow { opacity: 1; color: var(--white); }
+  table.data td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  table.data tr:last-child td { border-bottom: none; }
+  table.data tbody tr { transition: background 0.18s ease; }
+  table.data tbody tr:hover { background: rgba(125,223,100,0.04); }
+  table.data tr.highlight-best { background: rgba(125,223,100,0.07); }
+  table.data tr.highlight-sub { background: rgba(0,180,216,0.06); }
+  .type-pill { font-size: 0.72rem; font-weight: 700; padding: 0.12rem 0.5rem; border-radius: 4px; white-space: nowrap; }
+  .type-instr { background: rgba(0,180,216,0.15); color: var(--cyan); }
+  .type-paddle { background: rgba(125,223,100,0.15); color: var(--lime); }
+  .type-gear { background: rgba(255,195,77,0.15); color: var(--amber); }
+  .avp-cell { font-weight: 800; }
+  .subs-cell { font-weight: 700; }
+  .num-mono { font-variant-numeric: tabular-nums; }
+
+  /* Missing-data cards */
+  .missing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1rem; margin: 1rem 0; }
+  .missing-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--cyan);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+  }
+  .missing-card h4 { font-size: 0.98rem; margin-bottom: 0.4rem; color: var(--cyan); }
+  .missing-card p { font-size: 0.86rem; color: var(--muted); }
+
+  /* Animations */
+  .fade-in { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .fade-in-scale { opacity: 0; transform: scale(0.94); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+  .fade-in-scale.visible { opacity: 1; transform: scale(1); }
+  .stagger-children > * { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+  .stagger-children.visible > * { opacity: 1; transform: translateY(0); }
+  .stagger-children.visible > *:nth-child(1){transition-delay:.05s}
+  .stagger-children.visible > *:nth-child(2){transition-delay:.1s}
+  .stagger-children.visible > *:nth-child(3){transition-delay:.15s}
+  .stagger-children.visible > *:nth-child(4){transition-delay:.2s}
+  .stagger-children.visible > *:nth-child(5){transition-delay:.25s}
+  .stagger-children.visible > *:nth-child(6){transition-delay:.3s}
+  .stagger-children.visible > *:nth-child(7){transition-delay:.35s}
+  .stagger-children.visible > *:nth-child(8){transition-delay:.4s}
+  .stagger-children.visible > *:nth-child(9){transition-delay:.45s}
+
+  .footer-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    .split { grid-template-columns: 1fr; }
+    .split-col.instructional { border-right: none; border-bottom: 1px solid var(--border); }
+    .split-divider { display: none; }
+    .cadence { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .hero { padding: 2.5rem 1rem 1.8rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .container { padding: 1.2rem 1rem 3rem; }
+    .action-grid { grid-template-columns: 1fr; }
+    .diagnosis { font-size: 1.05rem; padding: 1.2rem 1.3rem; }
+    .diagnosis .punch { font-size: 1.12rem; }
+    .role-bar { padding: 0.8rem 1rem; position: static; }
+    .role-hint { display: none; }
+    .section-details > summary { padding: 0.9rem 1rem; gap: 0.5rem; }
+    h2.section-title { font-size: 1.15rem; }
+    .details-body { padding: 1rem 1rem 1.3rem; }
+    .grade-card .grade { font-size: 2.2rem; }
+    .back-to-top { bottom: 1rem; right: 1rem; }
+  }
+</style>
+</head>
+<body data-filter="both">
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+<header class="hero">
+  <div class="kicker">Limitless Pickleball</div>
+  <h1>Long-Form <span>Playbook</span></h1>
+  <p class="subtitle">An editing &amp; filming system, built from real retention data. The whole long-form deficit lives in the talk before the payoff — so cut the talk and front-load the show.</p>
+  <div class="meta-row">
+    <span class="badge"><strong>9</strong> long-form videos</span>
+    <span class="badge">Full retention curves</span>
+    <span class="badge">YouTube Analytics API &bull; <strong>2026-06-10</strong></span>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ROLE FILTER -->
+<div class="role-bar" id="roleBar">
+  <span class="role-label">View tasks for</span>
+  <button class="role-btn active" data-role="both">👥 Both</button>
+  <button class="role-btn" data-role="jeff">🎬 Jeff</button>
+  <button class="role-btn" data-role="editor">✂️ Editor</button>
+  <span class="role-hint" id="roleHint">Showing all recommendations</span>
+</div>
+
+<!-- ═══════════ ACTION PLAN ═══════════ -->
+<section class="action-plan-section fade-in" id="action-plan">
+  <div class="ap-head">
+    <span class="icon">✅</span>
+    <h2>The Action Plan — Top Fixes, Ranked by Impact</h2>
+  </div>
+  <p class="section-desc">Five moves, ranked by measured impact on the channel. Do these first. Expand any section below for the full reasoning.</p>
+
+  <div class="action-grid stagger-children">
+    <div class="action-card role-item editor-only">
+      <div class="action-top">
+        <span class="action-num">1</span>
+        <span class="action-icon">✂️</span>
+        <span class="score-badge score-high">IMPACT 10/10</span>
+      </div>
+      <h4>Delete the spoken intro on instructional videos</h4>
+      <p>Fixes the −12-point 0:17–0:22 cliff that's on nearly every video. Branding becomes a 1–2s lower-third, never spoken.</p>
+      <div class="owners"><span class="owner-tag owner-editor">✂️ Editor</span></div>
+    </div>
+
+    <div class="action-card role-item">
+      <div class="action-top">
+        <span class="action-num">2</span>
+        <span class="action-icon">🏓</span>
+        <span class="score-badge score-high">IMPACT 10/10</span>
+      </div>
+      <h4>Cold-open paddle reviews on the decision/verdict</h4>
+      <p>Code lands at the verdict beat. Recovers the most expensive bleed on the channel (0:03–0:19) — where the real revenue is.</p>
+      <div class="owners"><span class="owner-tag owner-editor">✂️ Editor</span><span class="owner-tag owner-jeff">🎬 Jeff</span></div>
+    </div>
+
+    <div class="action-card role-item editor-only">
+      <div class="action-top">
+        <span class="action-num">3</span>
+        <span class="action-icon">📑</span>
+        <span class="score-badge score-high">IMPACT 9/10</span>
+      </div>
+      <h4>Structure all instruction as numbered, multi-payoff lists</h4>
+      <p>The difference between 60% and 44% retention. Each payoff beat pulls the viewer to the next number.</p>
+      <div class="owners"><span class="owner-tag owner-jeff">🎬 Jeff</span></div>
+    </div>
+
+    <div class="action-card role-item editor-only">
+      <div class="action-top">
+        <span class="action-num">4</span>
+        <span class="action-icon">⏱️</span>
+        <span class="score-badge score-med">IMPACT 8/10</span>
+      </div>
+      <h4>Add chapters to every long-form ≥4 min</h4>
+      <p>Quick win — unlocks Google Key Moments, adds ~4% AVD, lets viewers skip the bleed. Currently zero long-form videos have them.</p>
+      <div class="owners"><span class="owner-tag owner-editor">✂️ Editor</span></div>
+    </div>
+
+    <div class="action-card role-item editor-only">
+      <div class="action-top">
+        <span class="action-num">5</span>
+        <span class="action-icon">📅</span>
+        <span class="score-badge score-med">IMPACT 7/10</span>
+      </div>
+      <h4>Time paddle reviews to Friday launches + warm waves</h4>
+      <p>Drop a review when Friday has a launch AND you've just had an instructional pop. Convert fresh audiences, not cold ones.</p>
+      <div class="owners"><span class="owner-tag owner-editor">✂️ Editor</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ THE DIAGNOSIS ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details" open>
+    <summary>
+      <h2 class="section-title"><span class="icon">🩺</span> The Diagnosis</h2>
+      <span class="score-badge score-high">THE WHOLE THING</span>
+    </summary>
+    <div class="details-body">
+      <div class="diagnosis">
+        Your content is already retention-grade for your tier. The entire long-form deficit lives in <strong>the spoken intro and the buried verdict.</strong> You're not losing people on the tips or the paddles — you're losing them on the <em>talk before the payoff.</em>
+        <span class="punch">Cut the talk. Front-load the show.</span>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ TWO VIDEOS, TWO JOBS ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details" open>
+    <summary>
+      <h2 class="section-title"><span class="icon">🔀</span> Two Videos, Two Jobs</h2>
+      <span class="score-badge score-high">CORE MENTAL MODEL</span>
+    </summary>
+    <div class="details-body">
+      <p class="body">We make two kinds of long-form, and they are <strong>NOT the same product.</strong> They grow differently, convert differently, and <strong>fail in different places.</strong> Treating them the same is the core mistake. This whole doc is split accordingly.</p>
+
+      <div class="split">
+        <div class="split-col instructional">
+          <h4>🎓 Instructional</h4>
+          <div class="split-row"><span class="k">The job</span><span class="v">Grow subscribers + authority</span></div>
+          <div class="split-row"><span class="k">Videos in sample</span><span class="v">5</span></div>
+          <div class="split-row"><span class="k">Avg retention (AVP)</span><span class="v">~52%</span></div>
+          <div class="split-row"><span class="k">Avg subscribers / video</span><span class="v big">194</span></div>
+          <div class="split-row"><span class="k">Where viewers bleed</span><span class="v">0:17–0:22 (the spoken intro)</span></div>
+          <div class="split-row"><span class="k">Rewind spikes land on</span><span class="v">demos / the payoff tip</span></div>
+        </div>
+        <div class="split-col paddle">
+          <h4>🏓 Paddle / Gear</h4>
+          <div class="split-row"><span class="k">The job</span><span class="v">Convert affiliate sales (esp. Friday)</span></div>
+          <div class="split-row"><span class="k">Videos in sample</span><span class="v">4</span></div>
+          <div class="split-row"><span class="k">Avg retention (AVP)</span><span class="v">~55%</span></div>
+          <div class="split-row"><span class="k">Avg subscribers / video</span><span class="v big">7</span></div>
+          <div class="split-row"><span class="k">Where viewers bleed</span><span class="v">0:03–0:19 (specs before verdict)</span></div>
+          <div class="split-row"><span class="k">Rewind spikes land on</span><span class="v">the verdict + the demo</span></div>
+        </div>
+        <div class="split-divider">VS</div>
+      </div>
+
+      <div class="callout callout-lime">
+        <strong>These two feed each other.</strong> Instructional videos grow the subscriber base. That base is the future paddle-buying audience. Paddle videos convert them to revenue. So they're not competitors for the schedule — they're a funnel.
+      </div>
+
+      <div class="funnel">
+        <div class="funnel-step s1"><div class="fl-title">🎓 Instructional Videos</div><div class="fl-sub">Top of funnel — wide reach, grows authority</div></div>
+        <div class="funnel-arrow">▼</div>
+        <div class="funnel-step s2"><div class="fl-title">Subscribers</div><div class="fl-sub">The future paddle-buying audience</div></div>
+        <div class="funnel-arrow">▼</div>
+        <div class="funnel-step s3"><div class="fl-title">🏓 Paddle Reviews</div><div class="fl-sub">Convert the warm base</div></div>
+        <div class="funnel-arrow">▼</div>
+        <div class="funnel-step s4"><div class="fl-title">💰 Affiliate Sales</div><div class="fl-sub">Friday especially</div></div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ THE RETENTION STORY ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details" open>
+    <summary>
+      <h2 class="section-title"><span class="icon">📉</span> The Retention Story</h2>
+      <span class="score-badge score-high">CENTERPIECE</span>
+    </summary>
+    <div class="details-body">
+      <p class="body">Every single video holds <strong>90–97% at the 1.4-second mark.</strong> Translation: the hooks and thumbnails are already working — people click and they stay through the opening frame. Then a predictable cliff hits.</p>
+
+      <div class="chart-wrap">
+        <div class="chart-canvas-holder">
+          <canvas id="retentionChart"></canvas>
+        </div>
+        <div class="chart-legend">
+          <span><span class="dot" style="background:#00b4d8"></span> 🎓 Instructional (15 Tips Pt 2)</span>
+          <span><span class="dot" style="background:#7ddf64"></span> 🏓 Paddle (Friday vs Aura)</span>
+          <span><span class="dot" style="background:rgba(255,107,107,0.5)"></span> Bleed zones</span>
+          <span><span class="dot" style="background:rgba(125,223,100,0.5)"></span> Rewind spikes (money moments)</span>
+        </div>
+      </div>
+
+      <h3>The cliffs, by where they happen</h3>
+      <div class="cliff-notes">
+        <div class="cliff-note">
+          <span class="ct">0:17 – 0:22 &bull; UNIVERSAL</span>
+          <strong>The spoken intro.</strong> "Hey it's Jeff, in this video we'll cover…" — <em>15 Tips Part 2 drops −11.9 pts in 5 seconds here.</em> Topspin Dinks: −12. It's on nearly every video.
+        </div>
+        <div class="cliff-note">
+          <span class="ct">0:03 – 0:19 &bull; PADDLE BLEED</span>
+          <strong>Specs before the verdict.</strong> <em>JOOLA review: −10 pts in 3 seconds.</em> Friday vs Aura: ~−23 pts before 0:19.
+        </div>
+        <div class="cliff-note">
+          <span class="ct">0:45 – 0:51 &bull; TRANSITION</span>
+          <strong>The "so that was tip one, now…" bridge.</strong> Both 15 Tips videos drop 8–9 pts here.
+        </div>
+        <div class="cliff-note rewind">
+          <span class="ct">↑ REWIND SPIKES = MONEY</span>
+          <strong>Where the curve rises, people are rewatching.</strong> Demos and verdicts (Friday vs Aura at 2:21 &amp; 4:31; Aura Pro shapes at 0:40–0:50). <em>Front-load these and clip them as Shorts.</em>
+        </div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ PLAYBOOK A — INSTRUCTIONAL ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details">
+    <summary>
+      <h2 class="section-title"><span class="icon">🎓</span> Playbook A — Instructional Videos</h2>
+      <span class="score-badge score-ref">GROW SUBS</span>
+    </summary>
+    <div class="details-body">
+      <p class="body"><strong>Job: grow the subscriber base.</strong> This is the engine. <em>15 Tips Part 1 alone drove 558 subscribers.</em> Every sub here is a future paddle buyer.</p>
+      <div class="callout callout-amber">
+        <strong>The failure point: the 0:17–0:22 spoken intro.</strong> "Hey it's Jeff, in this video we'll cover…" is where people leave.
+      </div>
+      <p class="body"><strong>The pattern the data proves:</strong> multi-payoff beats single-skill, decisively. <em>4 Spin Serves</em> (4 discrete payoffs, 60.8% AVP) and <em>15 Tips</em> (listicle) hold strong. <em>Topspin Dinks</em> (one skill, slow linear build, 43.9%) is the worst instructional video. Each payoff beat pulls the viewer to the next.</p>
+
+      <div class="playbook-role-head jeff role-item editor-only">🎬 Jeff <span class="owner-tag owner-jeff">FILMING / ON-CAMERA</span></div>
+      <ul class="tips role-item editor-only">
+        <li class="jeff-only"><strong>Script a cold open, not an intro.</strong> Your first words = tip #1 or the first instruction. No "welcome," no "in this video."</li>
+        <li class="jeff-only"><strong>Demo first, explain over the replay.</strong> Every rewind spike is on a demonstration, never on talking. Hit the shot, <em>then</em> narrate it.</li>
+        <li class="jeff-only"><strong>Structure everything as a numbered list</strong> — even a single technique becomes "3 keys to the topspin dink." Gives the viewer a reason to stay for the next number.</li>
+        <li class="jeff-only"><strong>Open sequels cold on new value</strong> — zero recap. Part 2 underperformed Part 1 on every metric, and its worst cliff is the recap zone.</li>
+      </ul>
+
+      <div class="playbook-role-head editor role-item jeff-only">✂️ Editor <span class="owner-tag owner-editor">EDITING / PACKAGING</span></div>
+      <ul class="tips role-item jeff-only">
+        <li><strong>Cut the spoken intro entirely.</strong> Branding becomes a 1–2 second lower-third, never spoken. <em>(This fixes the −12-point cliff that's on every video.)</em></li>
+        <li><strong>Hard-cut tip-to-tip with an on-screen chapter card.</strong> Kill every "so that was tip one…" <em>(Fixes the 0:45–0:51 cliff.)</em></li>
+        <li><strong>Don't shorten the 9-minute flagship to chase a prettier percentage.</strong> It holds each viewer 257 seconds — longer than the entire runtime of your best short video — and drives the most subs. Fix its intro, keep its dense body.</li>
+        <li><strong>Add chapters to every video ≥4 min.</strong> Unlocks Google Key Moments, adds ~4% AVD, lets viewers skip the bleed zone. Currently zero long-form videos have them — biggest quick win on the channel.</li>
+        <li><strong>Double down on numbered franchises.</strong> Extend "15 Tips" into a recurring series ("X mistakes over-50 players make," "X serve-return rules").</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ PLAYBOOK B — PADDLE / GEAR ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details">
+    <summary>
+      <h2 class="section-title"><span class="icon">🏓</span> Playbook B — Paddle / Gear Videos</h2>
+      <span class="score-badge score-high">REVENUE</span>
+    </summary>
+    <div class="details-body">
+      <p class="body"><strong>Job: affiliate conversion — Friday especially, which converts well.</strong> These barely move subscribers (3–17 each) and that's fine. They monetize the audience the instructional videos built.</p>
+      <div class="callout callout-amber">
+        <strong>The failure point is earlier and more brutal: 0:03–0:19.</strong> Reviews open on spec recitation, so people leave <em>before the verdict.</em> That's the most expensive bleed on the channel, because this is where the real revenue is.
+      </div>
+
+      <div class="callout callout-cyan">
+        <h4>⚠️ The trust correction — read this first</h4>
+        <p style="margin-bottom:0.7rem;">Flashing a discount code early makes a review feel like a <strong>sales pitch</strong>, and that kills conversion harder than a slow open does. The fix is NOT "code early." It's <strong>"decision early."</strong></p>
+        <p style="margin-bottom:0.7rem;">Your best paddle video (Friday Aura Pro shapes, 65% AVP) opened as a <strong>buying guide</strong> — <em>"which shape is right for YOU"</em> — not a pitch and not a spec dump. Your worst (JOOLA, 44%) led with specs.</p>
+        <p><strong>The sequence that earns the sale:</strong> open on the honest <em>decision framing</em> → deliver a credible, genuinely useful review → let the code land at the <strong>natural conversion moment</strong> (the verdict rewind-spike), where the viewer has just decided "I want that paddle." At that point the code is the <em>answer to a question they're already asking</em>, not an interruption. Disclosure ("Friday sponsors me — here's my honest take") up front actually <strong>builds</strong> credibility instead of undercutting it.</p>
+      </div>
+
+      <div class="playbook-role-head jeff role-item editor-only">🎬 Jeff <span class="owner-tag owner-jeff">FILMING / ON-CAMERA</span></div>
+      <ul class="tips role-item editor-only">
+        <li class="jeff-only"><strong>Open on the decision, not the specs.</strong> Lead with "here's who this paddle is for / who should skip it." That's the 65% template vs the 44% one.</li>
+        <li class="jeff-only"><strong>Be honestly critical.</strong> The credibility of the verdict is what converts. A review that only praises reads as paid; an honest "this isn't for everyone" earns the buy.</li>
+        <li class="jeff-only"><strong>Save the most useful demo for the verdict moment</strong> — that's where people rewind, and where the code naturally belongs.</li>
+      </ul>
+
+      <div class="playbook-role-head editor role-item jeff-only">✂️ Editor <span class="owner-tag owner-editor">EDITING / PACKAGING</span></div>
+      <ul class="tips role-item jeff-only">
+        <li><strong>Cold-open on the verdict/decision framing.</strong> The 4:31 rewind spike on Friday vs Aura <em>is</em> the verdict — move it near the front. Specs go to the back for the buyers who stayed.</li>
+        <li><strong>Place the code at the verdict beat, on screen, held there</strong> — the natural conversion moment, not the cold open. Doubles as clean FTC disclosure real estate.</li>
+        <li><strong>Frame the title + thumbnail as "which paddle for YOU,"</strong> not "specs." Lead with the model name (people search exact paddle names).</li>
+        <li><strong>Fix existing descriptions</strong> that open with an affiliate link — it eats the search preview. Hook first, link below the fold.</li>
+        <li><strong>Clip the verdict + demo as Shorts</strong> to feed the review (and these are where your big-view Shorts come from anyway).</li>
+      </ul>
+
+      <div class="playbook-role-head editor role-item jeff-only">⏱️ Timing <span class="owner-tag owner-editor">EDITOR OWNS THE CALENDAR</span></div>
+      <ul class="tips role-item jeff-only">
+        <li><strong>Drop a paddle review when both are true:</strong> (a) Friday has something launching, and (b) you've just had an instructional video pop — you're converting a fresh, warm subscriber wave instead of a cold audience.</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ HOW THEY WORK TOGETHER ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details">
+    <summary>
+      <h2 class="section-title"><span class="icon">🤝</span> How They Work Together</h2>
+      <span class="score-badge score-ref">CADENCE</span>
+    </summary>
+    <div class="details-body">
+      <p class="body">One shoot, both systems. A target week, roughly 3:1 instructional-to-paddle on long-form, plus 2–3 Shorts that feed discovery back into the long-form.</p>
+
+      <div class="cadence">
+        <div class="cadence-day"><span class="dow">Mon</span><span class="cadence-pill pill-long">🎓 Long-form</span></div>
+        <div class="cadence-day"><span class="dow">Tue</span><span class="cadence-pill pill-short">▶ Short</span></div>
+        <div class="cadence-day"><span class="dow">Wed</span></div>
+        <div class="cadence-day"><span class="dow">Thu</span><span class="cadence-pill pill-short">▶ Short</span></div>
+        <div class="cadence-day"><span class="dow">Fri</span><span class="cadence-pill pill-paddle">🏓 Paddle*</span></div>
+        <div class="cadence-day"><span class="dow">Sat</span><span class="cadence-pill pill-short">▶ Short</span></div>
+        <div class="cadence-day"><span class="dow">Sun</span></div>
+      </div>
+      <p class="body" style="font-size:0.82rem;color:var(--muted);">*Paddle review only when Friday has a launch <em>and</em> a fresh instructional pop has warmed the audience — otherwise that slot is another instructional.</p>
+
+      <ul class="tips">
+        <li><strong>Instructional on a steady weekly cadence</strong> to grow subs (≈3:1 instructional-to-paddle on long-form).</li>
+        <li><strong>Paddle reviews timed to launches + warm subscriber waves.</strong></li>
+        <li><strong>One shoot, both systems:</strong> film clean enough that the demo/verdict moments become standalone Shorts that feed discovery back to the long-form.</li>
+        <li><strong>Cadence reality check:</strong> you're at ~1–2 long-form/month now. Target 1 long-form/week + 2–3 Shorts/week to feed both engines.</li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ THE SCORECARD ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details">
+    <summary>
+      <h2 class="section-title"><span class="icon">📊</span> The Scorecard</h2>
+      <span class="score-badge score-med">WHERE YOU STAND TODAY</span>
+    </summary>
+    <div class="details-body">
+      <p class="body">Where the channel stands today, across four dimensions.</p>
+      <div class="grade-grid stagger-children">
+        <div class="grade-card tier-b">
+          <div class="dim">Performance / Retention</div>
+          <div class="grade grade-b" data-grade="B+">B+</div>
+          <div class="why">Portfolio avg ~53% AVP clears the 40% bar (ahead of 83% of channels); 3 videos elite. Capped because the two highest-reach videos sit under the 50% recommendation threshold — a recoverable editing problem.</div>
+        </div>
+        <div class="grade-card tier-b">
+          <div class="dim">Content Strategy</div>
+          <div class="grade grade-b" data-grade="B−">B−</div>
+          <div class="why">Tight niche, but over-indexed on Shorts and under-producing the long-form that actually converts subs.</div>
+        </div>
+        <div class="grade-card tier-c">
+          <div class="dim">Technical SEO</div>
+          <div class="grade grade-c" data-grade="C+">C+</div>
+          <div class="why">Numbers-in-titles working; held back by zero chapters on any video and titles too short to earn the length lift.</div>
+        </div>
+        <div class="grade-card tier-c">
+          <div class="dim">Monetisation</div>
+          <div class="grade grade-c" data-grade="C+">C+</div>
+          <div class="why">YPP is live but small (~$100/mo). The real engine is paddle affiliates (Friday converts well) — see Playbook B. Untapped: an instructor course.</div>
+        </div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ THE 9 VIDEOS ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details">
+    <summary>
+      <h2 class="section-title"><span class="icon">🎬</span> The 9 Videos This Is Built On</h2>
+      <span class="score-badge score-ref">THE DATA</span>
+    </summary>
+    <div class="details-body">
+      <p class="body">Every call above traces back to these. Click a column header to sort. <span style="color:var(--lime);font-weight:700;">Serve Rules</span> is the retention champ; <span style="color:var(--cyan);font-weight:700;">15 Tips Pt 1</span> is the sub-driver.</p>
+      <div class="table-scroll">
+        <table class="data" id="videoTable">
+          <thead>
+            <tr>
+              <th data-key="title" data-type="str">Video <span class="arrow">↕</span></th>
+              <th data-key="type" data-type="str">Type <span class="arrow">↕</span></th>
+              <th data-key="length" data-type="num">Length <span class="arrow">↕</span></th>
+              <th data-key="views" data-type="num">Views <span class="arrow">↕</span></th>
+              <th data-key="avp" data-type="num" class="sorted">AVP% <span class="arrow">↓</span></th>
+              <th data-key="subs" data-type="num">Subs+ <span class="arrow">↕</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-best" data-title="New 2026 Serve Rules Explained" data-type="Instructional" data-length="136" data-views="10338" data-avp="69.6" data-subs="26">
+              <td>New 2026 Serve Rules Explained</td><td><span class="type-pill type-instr">Instructional</span></td><td class="num-mono">2:16</td><td class="num-mono">10,338</td><td class="avp-cell num-mono">69.6</td><td class="subs-cell num-mono">26</td>
+            </tr>
+            <tr data-title="Friday Aura Pro (which shape for you)" data-type="Paddle" data-length="122" data-views="3554" data-avp="65.1" data-subs="5">
+              <td>Friday Aura Pro (which shape for you)</td><td><span class="type-pill type-paddle">Paddle</span></td><td class="num-mono">2:02</td><td class="num-mono">3,554</td><td class="avp-cell num-mono">65.1</td><td class="subs-cell num-mono">5</td>
+            </tr>
+            <tr data-title="4 Spin Serves so NASTY" data-type="Instructional" data-length="267" data-views="11168" data-avp="60.8" data-subs="118">
+              <td>4 Spin Serves so NASTY</td><td><span class="type-pill type-instr">Instructional</span></td><td class="num-mono">4:27</td><td class="num-mono">11,168</td><td class="avp-cell num-mono">60.8</td><td class="subs-cell num-mono">118</td>
+            </tr>
+            <tr data-title="Why I'm DONE With Gen 4 (Hot Take)" data-type="Gear/opinion" data-length="196" data-views="2829" data-avp="57.1" data-subs="3">
+              <td>Why I'm DONE With Gen 4 (Hot Take)</td><td><span class="type-pill type-gear">Gear/opinion</span></td><td class="num-mono">3:16</td><td class="num-mono">2,829</td><td class="avp-cell num-mono">57.1</td><td class="subs-cell num-mono">3</td>
+            </tr>
+            <tr data-title="Friday vs Aura Pro vs Fever" data-type="Paddle" data-length="382" data-views="5651" data-avp="53.3" data-subs="17">
+              <td>Friday vs Aura Pro vs Fever</td><td><span class="type-pill type-paddle">Paddle</span></td><td class="num-mono">6:22</td><td class="num-mono">5,651</td><td class="avp-cell num-mono">53.3</td><td class="subs-cell num-mono">17</td>
+            </tr>
+            <tr class="highlight-sub" data-title="15 Tips to Win — Part 1" data-type="Instructional" data-length="569" data-views="25727" data-avp="45.3" data-subs="558">
+              <td>15 Tips to Win — Part 1</td><td><span class="type-pill type-instr">Instructional</span></td><td class="num-mono">9:29</td><td class="num-mono">25,727</td><td class="avp-cell num-mono">45.3</td><td class="subs-cell num-mono">558</td>
+            </tr>
+            <tr data-title="JOOLA 4 Killer? RPM Review" data-type="Paddle" data-length="285" data-views="1137" data-avp="44.2" data-subs="4">
+              <td>JOOLA 4 Killer? RPM Review</td><td><span class="type-pill type-paddle">Paddle</span></td><td class="num-mono">4:45</td><td class="num-mono">1,137</td><td class="avp-cell num-mono">44.2</td><td class="subs-cell num-mono">4</td>
+            </tr>
+            <tr data-title="How to hit deadly topspin dinks" data-type="Instructional" data-length="209" data-views="2758" data-avp="43.9" data-subs="15">
+              <td>How to hit deadly topspin dinks</td><td><span class="type-pill type-instr">Instructional</span></td><td class="num-mono">3:29</td><td class="num-mono">2,758</td><td class="avp-cell num-mono">43.9</td><td class="subs-cell num-mono">15</td>
+            </tr>
+            <tr data-title="15 Tips to Win — Part 2" data-type="Instructional" data-length="558" data-views="19579" data-avp="39.5" data-subs="252">
+              <td>15 Tips to Win — Part 2</td><td><span class="type-pill type-instr">Instructional</span></td><td class="num-mono">9:18</td><td class="num-mono">19,579</td><td class="avp-cell num-mono">39.5</td><td class="subs-cell num-mono">252</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════ WHAT WOULD SHARPEN THIS ═══════════ -->
+<section class="block fade-in">
+  <details class="section-details">
+    <summary>
+      <h2 class="section-title"><span class="icon">🔍</span> What Would Sharpen This</h2>
+      <span class="score-badge score-ref">MISSING DATA</span>
+    </summary>
+    <div class="details-body">
+      <p class="body">Two metrics no API exposes would turn good calls into precise ones. Both are flagged where they'd change a decision.</p>
+      <div class="missing-grid">
+        <div class="missing-card">
+          <h4>1. CTR per long-form video</h4>
+          <p>From YouTube Studio — the one metric no API exposes. Tells us whether <strong>thumbnails</strong> or <strong>retention</strong> is the bigger constraint.</p>
+        </div>
+        <div class="missing-card">
+          <h4>2. Friday affiliate clicks/sales per video</h4>
+          <p>From the affiliate dashboard. Tells us whether the constraint is <em>"not enough people reach the offer"</em> (an editing fix) or <em>"they reach it but don't buy"</em> (an offer/pitch fix). Different problems, different solutions.</p>
+        </div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<div class="footer-note">
+  Built from real measured YouTube Analytics API data, pulled 2026-06-10. CTR &amp; impressions excluded — YouTube does not expose them via any API. No login, no tracking. Works offline after first load.
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ===== Scroll progress + back-to-top =====
+  var progressBar = document.getElementById('scrollProgress');
+  var backToTop = document.getElementById('backToTop');
+  function onScroll() {
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    if (scrollTop > 400) backToTop.classList.add('show');
+    else backToTop.classList.remove('show');
+  }
+  backToTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) { requestAnimationFrame(function () { onScroll(); ticking = false; }); ticking = true; }
+  });
+
+  // ===== Scroll-triggered fade-ins =====
+  document.querySelectorAll('.action-card, .grade-card, .missing-card, .cliff-note, .funnel-step').forEach(function (el) {
+    if (!el.closest('.stagger-children')) el.classList.add('fade-in-scale');
+  });
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        if (entry.target.querySelector && entry.target.querySelector('.grade')) animateGrades(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in, .fade-in-scale, .stagger-children').forEach(function (el) { observer.observe(el); });
+
+  // ===== Scorecard grade flip/count-in =====
+  function animateGrades(scope) {
+    scope.querySelectorAll('.grade').forEach(function (el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      var target = el.getAttribute('data-grade');
+      el.style.transition = 'transform 0.5s cubic-bezier(.34,1.56,.64,1), opacity 0.5s ease';
+      el.style.opacity = '0';
+      el.style.transform = 'rotateX(-90deg) scale(0.8)';
+      var seq = ['F', 'D', 'C', 'B', 'A', target];
+      var i = 0;
+      setTimeout(function () {
+        el.style.opacity = '1';
+        el.style.transform = 'rotateX(0) scale(1)';
+        var iv = setInterval(function () {
+          el.textContent = seq[i];
+          i++;
+          if (i >= seq.length) { clearInterval(iv); el.textContent = target; }
+        }, 70);
+      }, 120);
+    });
+  }
+
+  // ===== Role filter =====
+  var roleHint = document.getElementById('roleHint');
+  var hints = {
+    both: 'Showing all recommendations',
+    jeff: 'Showing 🎬 Jeff — filming &amp; on-camera tasks',
+    editor: 'Showing ✂️ Editor — editing &amp; packaging tasks'
+  };
+  document.querySelectorAll('.role-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var role = btn.getAttribute('data-role');
+      document.querySelectorAll('.role-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.body.setAttribute('data-filter', role);
+      roleHint.innerHTML = hints[role];
+    });
+  });
+
+  // ===== Sortable data table =====
+  var table = document.getElementById('videoTable');
+  if (table) {
+    var tbody = table.querySelector('tbody');
+    var headers = table.querySelectorAll('th');
+    var sortState = { key: 'avp', dir: -1 };
+    headers.forEach(function (th) {
+      th.addEventListener('click', function () {
+        var key = th.getAttribute('data-key');
+        var type = th.getAttribute('data-type');
+        if (sortState.key === key) sortState.dir *= -1;
+        else { sortState.key = key; sortState.dir = (type === 'num') ? -1 : 1; }
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+        rows.sort(function (a, b) {
+          var va = a.getAttribute('data-' + key), vb = b.getAttribute('data-' + key);
+          if (type === 'num') { va = parseFloat(va); vb = parseFloat(vb); }
+          else { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+          if (va < vb) return -1 * sortState.dir;
+          if (va > vb) return 1 * sortState.dir;
+          return 0;
+        });
+        rows.forEach(function (r) { tbody.appendChild(r); });
+        headers.forEach(function (h) {
+          h.classList.remove('sorted');
+          var arr = h.querySelector('.arrow'); if (arr) arr.textContent = '↕';
+        });
+        th.classList.add('sorted');
+        th.querySelector('.arrow').textContent = sortState.dir === -1 ? '↓' : '↑';
+      });
+    });
+    // Color-code AVP% cells by performance
+    tbody.querySelectorAll('tr').forEach(function (r) {
+      var avp = parseFloat(r.getAttribute('data-avp'));
+      var cell = r.querySelector('.avp-cell');
+      if (avp >= 60) cell.style.color = '#7ddf64';
+      else if (avp >= 50) cell.style.color = '#ffc34d';
+      else cell.style.color = '#ff6b6b';
+      var subs = parseInt(r.getAttribute('data-subs'), 10);
+      var scell = r.querySelector('.subs-cell');
+      if (subs >= 100) scell.style.color = '#7ddf64';
+      else scell.style.color = 'var(--muted)';
+    });
+  }
+
+  // ===== Retention curve chart =====
+  function buildChart() {
+    if (typeof Chart === 'undefined') return;
+    var ctx = document.getElementById('retentionChart');
+    if (!ctx) return;
+
+    // Time axis in seconds (0 -> ~60s window where the action happens)
+    var labels = ['0:00','0:01','0:03','0:09','0:15','0:17','0:20','0:22','0:30','0:40','0:45','0:51','1:00','1:30','2:00','2:21','3:00','4:00','4:31','5:00'];
+    // Instructional (15 Tips Pt 2 shape): flat ~95% start, 0:17-0:22 spoken-intro cliff, 0:45-0:51 transition cliff, demo rewind bumps
+    var instr = [97, 95, 93, 90, 88, 87.5, 79, 75.6, 71, 68, 66, 57.5, 55, 52, 50.5, 52, 49, 47, 46, 45.3];
+    // Paddle (Friday vs Aura shape): flat start, brutal 0:03-0:19 spec bleed, verdict rewind spikes at 2:21 & 4:31
+    var paddle = [96, 94, 91, 78, 70, 68.5, 67, 66, 64, 62, 61, 60, 59, 57, 56, 60, 56, 54, 58, 53.3];
+
+    var bleedZone = 'rgba(255,107,107,0.10)';
+
+    Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+    Chart.defaults.color = '#8b9fae';
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: '🎓 Instructional',
+            data: instr,
+            borderColor: '#00b4d8',
+            backgroundColor: 'rgba(0,180,216,0.08)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.35,
+            pointRadius: function (c) { return [5, 15, 18].indexOf(c.dataIndex) > -1 ? 4 : 0; },
+            pointBackgroundColor: '#00b4d8',
+            pointHoverRadius: 5
+          },
+          {
+            label: '🏓 Paddle / Gear',
+            data: paddle,
+            borderColor: '#7ddf64',
+            backgroundColor: 'rgba(125,223,100,0.08)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.35,
+            pointRadius: function (c) { return [2, 15, 18].indexOf(c.dataIndex) > -1 ? 4 : 0; },
+            pointBackgroundColor: '#7ddf64',
+            pointHoverRadius: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1600, easing: 'easeOutQuart' },
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0a1628',
+            borderColor: '#26395c',
+            borderWidth: 1,
+            titleColor: '#e8edf3',
+            bodyColor: '#e8edf3',
+            padding: 10,
+            callbacks: {
+              title: function (items) { return 'At ' + items[0].label; },
+              label: function (item) { return item.dataset.label + ': ' + item.parsed.y + '% retained'; }
+            }
+          }
+        },
+        scales: {
+          y: {
+            min: 30, max: 100,
+            title: { display: true, text: '% of viewers still watching', color: '#8b9fae' },
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { callback: function (v) { return v + '%'; } }
+          },
+          x: {
+            title: { display: true, text: 'Time into video', color: '#8b9fae' },
+            grid: { display: false },
+            ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 12 }
+          }
+        }
+      },
+      plugins: [{
+        id: 'cliffZones',
+        beforeDraw: function (chart) {
+          var x = chart.scales.x, y = chart.scales.y, c = chart.ctx;
+          function band(i1, i2, color, label, labelColor) {
+            var x1 = x.getPixelForValue(i1), x2 = x.getPixelForValue(i2);
+            c.save();
+            c.fillStyle = color;
+            c.fillRect(x1, y.top, x2 - x1, y.bottom - y.top);
+            if (label) {
+              c.fillStyle = labelColor;
+              c.font = '700 10px Segoe UI';
+              c.textAlign = 'center';
+              c.fillText(label, (x1 + x2) / 2, y.top + 12);
+            }
+            c.restore();
+          }
+          // 0:03-0:19 paddle bleed (indices 2-6)
+          band(2, 6, 'rgba(255,107,107,0.09)', '⚠ 0:03–0:19 bleed', 'rgba(255,107,107,0.85)');
+          // 0:17-0:22 spoken-intro cliff (indices 5-7)
+          band(5, 7, 'rgba(255,107,107,0.13)', '⚠ intro cliff', 'rgba(255,107,107,0.9)');
+          // 0:45-0:51 transition cliff (indices 10-11)
+          band(10, 11, 'rgba(255,107,107,0.09)', null, null);
+          // rewind spikes (verdicts) at index 15 & 18
+          [15, 18].forEach(function (i) {
+            var px = x.getPixelForValue(i);
+            c.save();
+            c.strokeStyle = 'rgba(125,223,100,0.5)';
+            c.setLineDash([4, 3]);
+            c.beginPath(); c.moveTo(px, y.top); c.lineTo(px, y.bottom); c.stroke();
+            c.fillStyle = 'rgba(125,223,100,0.9)';
+            c.font = '700 9px Segoe UI';
+            c.textAlign = 'center';
+            c.fillText('↑ rewind', px, y.bottom - 6);
+            c.restore();
+          });
+        }
+      }]
+    });
+  }
+  if (document.readyState === 'complete') buildChart();
+  else window.addEventListener('load', buildChart);
+
+  // ===== Init =====
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
