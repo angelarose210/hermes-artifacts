@@ -766,6 +766,34 @@
   .toc a:hover::after {
     width: 100%;
   }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .hero { padding: 2.5rem 1rem 1.8rem; }
+    .hero h1 { font-size: 1.5rem; }
+    .container { padding: 1.2rem 1rem 3rem; }
+
+    .ceiling-row {
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+    }
+    .ceiling-bar {
+      order: 3;
+      width: 100% !important;
+      height: 12px;
+    }
+    .ceiling-row span {
+      order: 2;
+      flex: 1;
+      min-width: 0;
+      font-size: 0.82rem;
+    }
+
+    table { font-size: 0.8rem; }
+    td, th { padding: 0.4rem 0.5rem; }
+    .pattern-grid { grid-template-columns: 1fr; }
+    .anti-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
