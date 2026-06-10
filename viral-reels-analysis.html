@@ -571,9 +571,210 @@
   /* Word freq table highlight */
   .freq-high { color: var(--red); font-weight: 700; }
   .freq-med { color: var(--orange); font-weight: 600; }
+
+  /* ===== ANIMATIONS ===== */
+
+  /* Scroll progress bar */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--pink), var(--orange));
+    z-index: 9999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(0,229,255,0.5);
+  }
+
+  /* Hero gradient animation */
+  .hero {
+    animation: heroShift 8s ease-in-out infinite alternate;
+  }
+  @keyframes heroShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .hero h1 {
+    animation: heroTitleIn 1s ease-out both;
+  }
+  .hero .subtitle {
+    animation: heroSubIn 1s ease-out 0.3s both;
+  }
+  .hero .badge {
+    animation: heroBadgeIn 0.8s ease-out 0.6s both;
+  }
+  @keyframes heroTitleIn {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes heroSubIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes heroBadgeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Scroll-triggered fade-in */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-in-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .fade-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .fade-in-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .fade-in-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Staggered children */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; }
+  .stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+  .stagger-children.visible > *:nth-child(3) { transition-delay: 0.15s; }
+  .stagger-children.visible > *:nth-child(4) { transition-delay: 0.2s; }
+  .stagger-children.visible > *:nth-child(5) { transition-delay: 0.25s; }
+  .stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
+  .stagger-children.visible > *:nth-child(7) { transition-delay: 0.35s; }
+  .stagger-children.visible > *:nth-child(8) { transition-delay: 0.4s; }
+  .stagger-children.visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hover glow on cards */
+  .card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,229,255,0.08);
+    border-color: rgba(0,229,255,0.3);
+  }
+  .pattern-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .pattern-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,229,255,0.1);
+    border-color: rgba(0,229,255,0.3);
+  }
+  .recipe {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .recipe:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,229,255,0.08);
+    border-color: rgba(0,229,255,0.3);
+  }
+
+  /* Table row hover glow */
+  tr {
+    transition: background 0.2s ease;
+  }
+
+  /* Animated view counter */
+  .views-count {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .views-count.counting {
+    animation: countPop 0.4s ease-out;
+  }
+  @keyframes countPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); color: var(--cyan); }
+    100% { transform: scale(1); }
+  }
+
+  /* Section number pulse on scroll */
+  h2.section-title .num {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  h2.section-title .num.active {
+    transform: scale(1.15);
+    box-shadow: 0 0 15px rgba(0,229,255,0.4);
+  }
+
+  /* Smooth back-to-top button */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 44px;
+    height: 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--cyan);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s, background 0.2s;
+    z-index: 100;
+  }
+  .back-to-top.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .back-to-top:hover {
+    background: rgba(0,229,255,0.1);
+    border-color: var(--cyan);
+  }
+
+  /* TOC link hover underline */
+  .toc a {
+    position: relative;
+  }
+  .toc a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--cyan);
+    transition: width 0.3s ease;
+  }
+  .toc a:hover::after {
+    width: 100%;
+  }
 </style>
 </head>
 <body>
+
+<!-- Scroll progress bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Back to top button -->
+<button class="back-to-top" id="backToTop" title="Back to top">↑</button>
 
 <!-- Hero -->
 <header class="hero">
@@ -1325,6 +1526,169 @@
 <footer style="text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;border-top:1px solid var(--border);">
   @limitlesspickleball &bull; Viral Reels Analysis &bull; Generated June 2026
 </footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // === Scroll Progress Bar ===
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+  }
+
+  // === Back to Top Button ===
+  const backToTop = document.getElementById('backToTop');
+  function updateBackToTop() {
+    if (window.scrollY > 400) {
+      backToTop.classList.add('show');
+    } else {
+      backToTop.classList.remove('show');
+    }
+  }
+  backToTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // === Throttled scroll handler ===
+  let ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        updateProgress();
+        updateBackToTop();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // === Auto-add animation classes to elements ===
+  // Sections fade in from bottom
+  document.querySelectorAll('section').forEach(function(el) {
+    el.classList.add('fade-in');
+  });
+
+  // Cards, patterns, recipes fade in with scale
+  document.querySelectorAll('.card, .pattern-card, .recipe').forEach(function(el) {
+    el.classList.add('fade-in-scale');
+  });
+
+  // TOC fades in from left
+  document.querySelectorAll('.toc').forEach(function(el) {
+    el.classList.add('fade-in-left');
+  });
+
+  // Tables get staggered row animation
+  document.querySelectorAll('table tbody').forEach(function(el) {
+    el.classList.add('stagger-children');
+  });
+
+  // Callouts fade in
+  document.querySelectorAll('.callout').forEach(function(el) {
+    el.classList.add('fade-in');
+  });
+
+  // Formulas fade in from left
+  document.querySelectorAll('.formula').forEach(function(el) {
+    el.classList.add('fade-in-left');
+  });
+
+  // === Intersection Observer for scroll animations ===
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+
+        // Pulse the section number when section comes into view
+        var num = entry.target.querySelector('h2.section-title .num');
+        if (num) {
+          num.classList.add('active');
+          setTimeout(function() { num.classList.remove('active'); }, 600);
+        }
+
+        // Animate view counts in this section
+        entry.target.querySelectorAll('.views').forEach(function(el) {
+          animateViewCount(el);
+        });
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-scale, .stagger-children').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // === View Count Animation ===
+  function animateViewCount(el) {
+    if (el.dataset.animated) return;
+    el.dataset.animated = 'true';
+
+    var text = el.textContent.trim();
+    var match = text.match(/^([\d,.]+)(K?)$/);
+    if (!match) return;
+
+    var num = parseFloat(match[1].replace(/,/g, ''));
+    var suffix = match[2];
+    var duration = 800;
+    var start = null;
+
+    el.classList.add('views-count');
+
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      var progress = Math.min((timestamp - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      var current = Math.round(num * eased);
+
+      if (suffix === 'K') {
+        el.textContent = current.toLocaleString() + 'K';
+      } else {
+        el.textContent = current.toLocaleString();
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = text; // restore original
+        el.classList.add('counting');
+        setTimeout(function() { el.classList.remove('counting'); }, 400);
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  // === Smooth scroll for TOC links ===
+  document.querySelectorAll('.toc a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        var target = document.querySelector(href);
+        if (target) {
+          var offset = 20;
+          var top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // === Initial state ===
+  updateProgress();
+  updateBackToTop();
+
+})();
+</script>
 
 </body>
 </html>
