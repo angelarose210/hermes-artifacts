@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@limitlesspickleball — Viral Reels Analysis</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --cyan: #00e5ff;
+    --orange: #ff6d3a;
+    --green: #00e676;
+    --red: #ff4757;
+    --yellow: #ffd600;
+    --pink: #ff4081;
+    --white: #e6edf3;
+    --muted: #8b949e;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1040 50%, #0d1117 100%);
+    border-bottom: 2px solid var(--cyan);
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(0,229,255,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255,77,87,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+  }
+  .hero h1 span { color: var(--cyan); }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 550px;
+    margin: 0 auto;
+  }
+  .hero .badge {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--cyan);
+    border-radius: 99px;
+    font-size: 0.78rem;
+    color: var(--cyan);
+    letter-spacing: 0.05em;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.4rem 2rem;
+  }
+  .toc li { counter-increment: toc; }
+  .toc li::before {
+    content: counter(toc) ".";
+    color: var(--cyan);
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+  .toc a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.15s;
+  }
+  .toc a:hover { color: var(--cyan); }
+
+  /* Sections */
+  section { margin-bottom: 3rem; }
+  h2.section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  h2.section-title .num {
+    background: var(--cyan);
+    color: var(--bg);
+    font-size: 0.85rem;
+    font-weight: 800;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-desc {
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 1.8rem 0 0.7rem;
+    color: var(--white);
+  }
+  h3 .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .tag-tutorial { background: rgba(0,229,255,0.15); color: var(--cyan); }
+  .tag-info { background: rgba(255,109,58,0.15); color: var(--orange); }
+  .tag-both { background: rgba(255,214,0,0.15); color: var(--yellow); }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card-accent {
+    border-left: 3px solid var(--cyan);
+  }
+  .card-orange { border-left: 3px solid var(--orange); }
+  .card-green { border-left: 3px solid var(--green); }
+  .card-red { border-left: 3px solid var(--red); }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 2px solid var(--border);
+    color: var(--cyan);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  td {
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: rgba(0,229,255,0.03); }
+  .views {
+    font-weight: 700;
+    color: var(--green);
+    white-space: nowrap;
+  }
+
+  /* Code / Formula blocks */
+  .formula {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.3rem;
+    margin: 0.8rem 0;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: var(--muted);
+  }
+  .formula strong { color: var(--white); }
+  .formula .hl-cyan { color: var(--cyan); font-weight: 700; }
+  .formula .hl-orange { color: var(--orange); font-weight: 700; }
+  .formula .hl-green { color: var(--green); font-weight: 700; }
+  .formula .hl-red { color: var(--red); font-weight: 700; }
+  .formula .hl-yellow { color: var(--yellow); font-weight: 700; }
+
+  /* Lists */
+  ul, ol.content-list {
+    margin: 0.5rem 0 0.5rem 1.2rem;
+  }
+  ul li, ol.content-list li {
+    margin-bottom: 0.35rem;
+    font-size: 0.93rem;
+  }
+  ul li::marker { color: var(--cyan); }
+
+  /* Callouts */
+  .callout {
+    padding: 1rem 1.3rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .callout-cyan {
+    background: rgba(0,229,255,0.07);
+    border-left: 3px solid var(--cyan);
+  }
+  .callout-orange {
+    background: rgba(255,109,58,0.07);
+    border-left: 3px solid var(--orange);
+  }
+  .callout-red {
+    background: rgba(255,71,87,0.07);
+    border-left: 3px solid var(--red);
+  }
+  .callout strong { color: var(--white); }
+
+  /* Grid for patterns */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .pattern-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+  .pattern-card .rank {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+  .pattern-card h4 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .pattern-card p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .pattern-card .metric {
+    margin-top: 0.6rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  /* Recipe cards */
+  .recipe {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    position: relative;
+  }
+  .recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .recipe h4 { font-size: 1.1rem; }
+  .recipe .target {
+    background: rgba(0,230,118,0.12);
+    color: var(--green);
+    padding: 0.2rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .recipe .ingredients {
+    list-style: none;
+    margin: 0.5rem 0;
+    padding: 0;
+  }
+  .recipe .ingredients li {
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+    padding-left: 1.4rem;
+    position: relative;
+  }
+  .recipe .ingredients li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-size: 0.6rem;
+    top: 0.45rem;
+  }
+  .recipe .meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.8rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .recipe .meta span strong { color: var(--white); }
+
+  /* Comparison table */
+  .compare-table th { font-size: 0.75rem; }
+  .compare-table td:first-child { font-weight: 600; }
+
+  /* Power words */
+  .tier-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .tier-row:last-child { border-bottom: none; }
+  .tier-label {
+    font-weight: 800;
+    font-size: 0.8rem;
+    width: 60px;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+  .tier-1 { background: rgba(255,71,87,0.2); color: var(--red); }
+  .tier-2 { background: rgba(255,109,58,0.2); color: var(--orange); }
+  .tier-3 { background: rgba(255,214,0,0.15); color: var(--yellow); }
+  .tier-words { font-size: 0.93rem; }
+  .tier-avg {
+    margin-left: auto;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--green);
+  }
+
+  /* Viral ceiling */
+  .ceiling {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .ceiling-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .ceiling-bar {
+    height: 24px;
+    border-radius: 4px;
+    min-width: 8px;
+    flex-shrink: 0;
+  }
+  .ceiling-label {
+    font-weight: 700;
+    width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Anti-patterns */
+  .anti-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .anti-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--red);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+  }
+  .anti-card h4 {
+    font-size: 0.9rem;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+  .anti-card li { font-size: 0.85rem; color: var(--muted); }
+  .anti-card li::marker { color: var(--red); }
+
+  /* Layout diagrams */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .layout-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .layout-card h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    color: var(--cyan);
+  }
+  .layout-card .views-tag {
+    font-size: 0.75rem;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .layout-card pre {
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 0.6rem;
+    font-size: 0.68rem;
+    line-height: 1.4;
+    color: var(--muted);
+    text-align: left;
+    overflow-x: auto;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--cyan), var(--orange), var(--green));
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.65rem;
+    top: 0.5rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cyan);
+    border: 2px solid var(--bg);
+  }
+  .timeline-item .time {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--cyan);
+    font-weight: 700;
+  }
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    margin-top: 0.15rem;
+  }
+
+  /* Hooks table */
+  .hook-table .hook-text {
+    font-weight: 600;
+    color: var(--yellow);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.5rem; }
+    .container { padding: 1.2rem 1rem 3rem; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    .pattern-grid { grid-template-columns: 1fr; }
+    .tier-avg { margin-left: 0; }
+  }
+
+  /* Scroll margin for anchor links */
+  [id] { scroll-margin-top: 1.5rem; }
+
+  /* Rule box */
+  .rule-list {
+    counter-reset: rules;
+    list-style: none;
+    margin: 0.8rem 0;
+    padding: 0;
+  }
+  .rule-list li {
+    counter-increment: rules;
+    padding: 0.5rem 0 0.5rem 2.5rem;
+    position: relative;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .rule-list li:last-child { border-bottom: none; }
+  .rule-list li::before {
+    content: counter(rules);
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 22px;
+    height: 22px;
+    background: var(--cyan);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 0.75rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Word freq table highlight */
+  .freq-high { color: var(--red); font-weight: 700; }
+  .freq-med { color: var(--orange); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <h1>@limitlesspickleball <span>Viral Reels Playbook</span></h1>
+  <p class="subtitle">Hook formulas, editing patterns & production recipes distilled from our 15 most-viewed reels</p>
+  <span class="badge">15 VIDEOS ANALYZED &bull; 100K–502K VIEWS</span>
+</header>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#hooks">Hook Patterns &amp; Formulas</a></li>
+    <li><a href="#editing">Editing Tips &amp; Techniques</a></li>
+    <li><a href="#infographic-editing">Infographic Animation Patterns</a></li>
+    <li><a href="#antipatterns">Anti-Patterns (What Kills Videos)</a></li>
+    <li><a href="#comparison">Content Type Comparison</a></li>
+    <li><a href="#recipes">Production Recipes</a></li>
+    <li><a href="#appendix">Appendix: Raw Hook Database &amp; Power Words</a></li>
+  </ol>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PART 1: HOOKS -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="hooks">
+  <h2 class="section-title"><span class="num">1</span> Hook Patterns &amp; Formulas</h2>
+  <p class="section-desc">The opening 1–3 seconds determine everything. Here's what's proven to work.</p>
+
+  <!-- Tutorial Hooks -->
+  <h3>Tutorial Hooks <span class="tag tag-tutorial">30–45s &bull; 150K–502K</span></h3>
+  <p style="color:var(--muted);margin-bottom:0.8rem;font-size:0.92rem;">Framework: <strong style="color:var(--yellow)">"The Forbidden Weapon"</strong> — Every viral tutorial uses the same psychological structure.</p>
+
+  <table class="hook-table">
+    <thead>
+      <tr><th>Video</th><th>Hook Text</th><th>Views</th><th>Framework</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>DV9g…</td><td class="hook-text">"IS THIS THE MOST DISRESPECTFUL SERVE?"</td><td class="views">502K</td><td>Provocative question + forbidden implication</td></tr>
+      <tr><td>DWPv…</td><td class="hook-text">"MOST DISRESPECTFUL SERVE?" (4 deadly spins)</td><td class="views">433K</td><td>Same formula + listicle tease</td></tr>
+      <tr><td>DRaR…</td><td class="hook-text">"THIS SERVE DIPS SO LOW PLAYERS THINK IT'S ILLEGAL"</td><td class="views">265K</td><td>Impossible claim + legality question</td></tr>
+      <tr><td>DSWQ…</td><td class="hook-text">"WHY PLAYERS OVER 50 CAN'T BEAT YOUNGER PLAYERS"</td><td class="views">177K</td><td>Age-based identity attack + curiosity gap</td></tr>
+      <tr><td>DS7y…</td><td class="hook-text">"WHY YOU HIT THE BALL INTO THE NET"</td><td class="views">161K</td><td>Direct accusation + universal pain point</td></tr>
+      <tr><td>DSq2…</td><td class="hook-text">"SPIN SERVES ILLEGAL IN 2026?"</td><td class="views">149K</td><td>Rule-change fear + FOMO</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tutorial Hook Triggers (ranked by views)</h3>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--red)">🏆 #1 — Highest Correlation</div>
+      <h4>"Forbidden / Illegal" Framing</h4>
+      <p>Implies the technique is so good it shouldn't be allowed.</p>
+      <div class="metric" style="color:var(--green)">265K – 502K views</div>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--orange)">🥈 #2</div>
+      <h4>Provocative Identity Challenge</h4>
+      <p>"Players over 50 CAN'T…" — attacks ego directly.</p>
+      <div class="metric" style="color:var(--green)">~177K views</div>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--yellow)">🥉 #3</div>
+      <h4>Direct Accusation of Failure</h4>
+      <p>"WHY YOU hit into the net" — viewer thinks "wait, is this about ME?"</p>
+      <div class="metric" style="color:var(--green)">~161K views</div>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--muted)">#4</div>
+      <h4>Fear of Rule Change</h4>
+      <p>FOMO trigger — "will I lose my weapon?"</p>
+      <div class="metric" style="color:var(--green)">~149K views</div>
+    </div>
+  </div>
+
+  <h3>Tutorial Hook Text Formulas</h3>
+  <div class="card card-accent">
+    <p style="font-size:0.8rem;color:var(--cyan);font-weight:700;margin-bottom:0.5rem;">PATTERN 1 — HIGHEST PERFORMING (265K–502K)</p>
+    <div class="formula">
+      <span class="hl-yellow">[SUPERLATIVE / EXTREME WORD]</span> + <span class="hl-cyan">[TECHNIQUE]</span> + <span class="hl-red">[FORBIDDEN / ILLEGAL IMPLICATION]</span><br><br>
+      <strong>Examples:</strong><br>
+      → "<span class="hl-red">MOST DISRESPECTFUL</span> <span class="hl-cyan">serve</span>"<br>
+      → "<span class="hl-cyan">DIPS SO LOW</span> players think it's <span class="hl-red">ILLEGAL</span>"<br>
+      → "4 <span class="hl-red">DEADLY</span> <span class="hl-cyan">spin serves</span>"
+    </div>
+  </div>
+  <div class="card card-orange">
+    <p style="font-size:0.8rem;color:var(--orange);font-weight:700;margin-bottom:0.5rem;">PATTERN 2 — STRONG (149K–177K)</p>
+    <div class="formula">
+      "<span class="hl-orange">WHY</span> <span class="hl-cyan">[SPECIFIC AUDIENCE]</span> <span class="hl-red">[CAN'T / DON'T]</span> <span class="hl-green">[DESIRED OUTCOME]</span>"<br><br>
+      <strong>Examples:</strong><br>
+      → "<span class="hl-orange">WHY</span> <span class="hl-cyan">PLAYERS OVER 50</span> <span class="hl-red">can't beat</span> younger players"<br>
+      → "<span class="hl-orange">WHY</span> <span class="hl-cyan">YOU</span> <span class="hl-red">hit the ball into the net</span>"
+    </div>
+  </div>
+  <div class="card">
+    <p style="font-size:0.8rem;color:var(--muted);font-weight:700;margin-bottom:0.5rem;">PATTERN 3 — RULE / NEWS HOOK (149K)</p>
+    <div class="formula">
+      "<span class="hl-cyan">[TECHNIQUE]</span> <span class="hl-red">[ILLEGAL / BANNED]</span> IN <span class="hl-yellow">[YEAR]</span>?"
+    </div>
+  </div>
+
+  <!-- Infographic Hooks -->
+  <h3>Infographic Hooks <span class="tag tag-info">5s &bull; 119K–245K</span></h3>
+  <p style="color:var(--muted);margin-bottom:0.8rem;font-size:0.92rem;">Framework: <strong style="color:var(--yellow)">"The Cheat Sheet Promise"</strong></p>
+
+  <table class="hook-table">
+    <thead>
+      <tr><th>Video</th><th>Hook Text</th><th>Views</th><th>Framework</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>DV6z…</td><td class="hook-text">"MASTER THE 4.0 LETHAL RETURN"</td><td class="views">245K</td><td>Aspirational level + power word</td></tr>
+      <tr><td>DVtx…</td><td class="hook-text">"CRUSH THE BANGERS: THE KITCHEN TRAP"</td><td class="views">192K</td><td>Enemy-solution + named strategy</td></tr>
+      <tr><td>DV_1…</td><td class="hook-text">"TACTICAL DINKING: THE ROAD TO 4.0"</td><td class="views">182K</td><td>Skill + aspirational milestone</td></tr>
+      <tr><td>DUvq…</td><td class="hook-text">"WIN WITHOUT DRILLING" (4.0 TACTICS)</td><td class="views">159K</td><td>Shortcut promise + level targeting</td></tr>
+      <tr><td>DVoA…</td><td class="hook-text">"STOP MAKING THIS SERVE MISTAKE!"</td><td class="views">153K</td><td>Negative framing + fear of error</td></tr>
+      <tr><td>DUt_…</td><td class="hook-text">"LEVEL UP: THE 3.5 TO 4.0 SERVING BLUEPRINT"</td><td class="views">148K</td><td>Level gap + blueprint metaphor</td></tr>
+      <tr><td>DUtB…</td><td class="hook-text">"3.5 TO 4.0: FORCE A SOFT-GAME DINK BATTLE"</td><td class="views">140K</td><td>Level gap + named enemy</td></tr>
+      <tr><td>DWth…</td><td class="hook-text">"FORCE THE ERROR: THE 70% POWER RULE"</td><td class="views">119K</td><td>Named rule/system + outcome</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Infographic Hook Triggers</h3>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--red)">🏆 #1</div>
+      <h4>Skill-Level Targeting</h4>
+      <p>"4.0", "3.5 to 4.0" — intermediate players feel "this is FOR ME."</p>
+      <div class="metric" style="color:var(--green)">Appears in 6 of 8 top hooks</div>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--orange)">🥈 #2</div>
+      <h4>Named Systems / Blueprints</h4>
+      <p>"The Kitchen Trap", "The 70% Rule", "The Serving Blueprint" — implies a secret framework.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--yellow)">🥉 #3</div>
+      <h4>Enemy Naming</h4>
+      <p>"Bangers", "The Error" — gives the viewer a villain to defeat.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--muted)">#4</div>
+      <h4>Power / Violence Words</h4>
+      <p>"CRUSH", "LETHAL", "FORCE", "DEADLY" — aggressive sports energy.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--muted)">#5</div>
+      <h4>Negative Framing</h4>
+      <p>"STOP MAKING THIS MISTAKE" — fear of failure > desire for success.</p>
+    </div>
+    <div class="pattern-card">
+      <div class="rank" style="color:var(--muted)">#6</div>
+      <h4>Shortcut Promise</h4>
+      <p>"WIN WITHOUT DRILLING" — skip the hard work.</p>
+    </div>
+  </div>
+
+  <h3>Infographic Hook Formulas</h3>
+  <div class="card card-accent">
+    <p style="font-size:0.8rem;color:var(--cyan);font-weight:700;margin-bottom:0.5rem;">PATTERN 1 — HIGHEST (182K–245K)</p>
+    <div class="formula">
+      <span class="hl-green">[ACTION VERB]</span> + "THE" + <span class="hl-cyan">[LEVEL]</span> + <span class="hl-red">[POWER WORD]</span> + <span class="hl-yellow">[TECHNIQUE]</span><br><br>
+      → "<span class="hl-green">MASTER</span> the <span class="hl-cyan">4.0</span> <span class="hl-red">LETHAL</span> <span class="hl-yellow">return</span>"
+    </div>
+  </div>
+  <div class="card card-orange">
+    <p style="font-size:0.8rem;color:var(--orange);font-weight:700;margin-bottom:0.5rem;">PATTERN 2 — STRONG (148K–192K)</p>
+    <div class="formula">
+      <span class="hl-green">[ENEMY-DEFEAT VERB]</span> + "THE" + <span class="hl-red">[ENEMY NAME]</span> + ":" + <span class="hl-cyan">[NAMED STRATEGY]</span><br><br>
+      → "<span class="hl-green">CRUSH</span> THE <span class="hl-red">BANGERS</span>: <span class="hl-cyan">THE KITCHEN TRAP</span>"
+    </div>
+  </div>
+  <div class="card">
+    <p style="font-size:0.8rem;color:var(--muted);font-weight:700;margin-bottom:0.5rem;">PATTERN 3 — SOLID (119K–159K)</p>
+    <div class="formula">
+      <span class="hl-red">[NEGATIVE FRAME]</span> + <span class="hl-cyan">[SPECIFIC TECHNIQUE / RULE]</span><br><br>
+      → "<span class="hl-red">STOP MAKING THIS</span> <span class="hl-cyan">SERVE MISTAKE</span>"<br>
+      → "<span class="hl-red">WIN WITHOUT</span> <span class="hl-cyan">DRILLING</span>"
+    </div>
+  </div>
+
+  <!-- Hook Generation Rules -->
+  <h3>The 8 Hook Rules <span class="tag tag-both">BOTH FORMATS</span></h3>
+  <div class="callout callout-cyan">
+    <ol class="rule-list">
+      <li><strong>Always include a skill-level number</strong> (3.5, 4.0, 4.5) — the #1 infographic engagement signal</li>
+      <li><strong>Name the enemy</strong> — "bangers", "pushers", "lobbers", or a specific frustration</li>
+      <li><strong>Use power words</strong>: LETHAL, DEADLY, CRUSH, FORCE, DESTROY, ILLEGAL, DISRESPECTFUL, BANNED</li>
+      <li><strong>Frame as forbidden/secret</strong>: "blueprint", "trap", "weapon", "cheat code", "the rule"</li>
+      <li><strong>Never use generic verbs</strong> — "How to improve" = death. "MASTER the LETHAL return" = viral</li>
+      <li><strong>Negative framing outperforms positive</strong> — "STOP making this mistake" > "Learn the right way"</li>
+      <li><strong>Question format for tutorials</strong> — "IS THIS THE MOST [extreme word] [technique]?"</li>
+      <li><strong>For rule/news hooks</strong>: Always add "?" — implies you'll get the answer if you watch</li>
+    </ol>
+  </div>
+
+  <!-- Visual requirements -->
+  <h3>Hook Visual Requirements (First 1–3 Seconds)</h3>
+  <table>
+    <thead>
+      <tr><th>Element</th><th>Viral (265K+)</th><th>Strong (149K–177K)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Opening visual</td><td>3D wireframe / anatomy animation</td><td>Action B-roll of another player</td></tr>
+      <tr><td>Text style</td><td>Bold red/neon, distressed font</td><td>Bold red, clean sans-serif</td></tr>
+      <tr><td>Background</td><td>Black/dark with neon accents</td><td>Court environment</td></tr>
+      <tr><td>Pattern interrupt</td><td>Animated figure (looks like video game)</td><td>Quick-cut montage creating contrast</td></tr>
+      <tr><td>Text position</td><td>Top-third, clear of IG UI</td><td>Centered, large</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Hook Audio (First 1–3 Seconds)</h3>
+  <div class="pattern-grid">
+    <div class="card card-accent" style="margin:0">
+      <h4 style="color:var(--cyan);font-size:0.9rem;">🔊 Viral Tier</h4>
+      <p style="font-size:0.88rem;color:var(--muted)">Subtle trap/electronic music kicks in immediately + ASMR paddle thwack</p>
+    </div>
+    <div class="card card-orange" style="margin:0">
+      <h4 style="color:var(--orange);font-size:0.9rem;">🔊 Strong Tier</h4>
+      <p style="font-size:0.88rem;color:var(--muted)">Lo-fi beat + authoritative voiceover starting immediately (no dead air)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PART 2: EDITING TIPS -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="editing">
+  <h2 class="section-title"><span class="num">2</span> Tutorial Editing Patterns</h2>
+  <p class="section-desc">Structure, text systems, trajectory lines, and visual mode switching from our top performers.</p>
+
+  <h3>Tutorial Video Structure (30–45 seconds)</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="time">0:00 – 0:03</div>
+      <div class="desc"><strong>THE HOOK</strong> — Pattern interrupt visual (3D animation or contrasting B-roll). Bold text overlay (red/neon, distressed font). Music starts immediately.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="time">0:03 – 0:15</div>
+      <div class="desc"><strong>THE PROBLEM</strong> — Cut to coach/speaker (medium shot). Demonstrate the WRONG technique (exaggerated). Kinetic captions word-by-word (key words in RED).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="time">0:15 – 0:30</div>
+      <div class="desc"><strong>THE SOLUTION</strong> — Visual mode switch (close-up feet/hands OR wide court shot). Trajectory lines/arrows animate over footage. Slow-motion "proof shot."</div>
+    </div>
+    <div class="timeline-item">
+      <div class="time">0:30 – 0:40</div>
+      <div class="desc"><strong>THE BENEFIT / RECAP</strong> — Return to medium shot. Confident closing statement. Logo/brand anchor.</div>
+    </div>
+  </div>
+
+  <h3>Caption System</h3>
+  <div class="card card-accent">
+    <ul>
+      <li>Word-by-word or phrase-by-phrase kinetic captions (Hormozi-style)</li>
+      <li><strong>Base color:</strong> WHITE &nbsp;|&nbsp; <strong style="color:var(--red)">Highlight: RED</strong> for key concepts &nbsp;|&nbsp; <strong style="color:var(--cyan)">CYAN</strong> for technique names</li>
+      <li><strong>Animation:</strong> "Pop-in" with slight bounce (overshoot easing)</li>
+      <li><strong>Position:</strong> Bottom-third during demos, top-third during hooks</li>
+      <li><strong>Font:</strong> Bold condensed sans-serif (Impact / Bebas Neue style), slightly distressed texture</li>
+    </ul>
+  </div>
+
+  <h3>Trajectory Lines <span style="font-size:0.75rem;color:var(--green);font-weight:700;">THE MONEY SHOT — present in ALL 265K+ videos</span></h3>
+  <div class="card card-green">
+    <ul>
+      <li><strong>Style:</strong> Glowing red or white line with slight outer glow</li>
+      <li><strong>Animation:</strong> "Draw-on" effect (stroke-dasharray 0% → 100%)</li>
+      <li><strong>Timing:</strong> Draw over 0.8–1.2s, synced to paddle contact sound</li>
+      <li><strong>Thickness:</strong> 4–6px with 8px glow radius</li>
+      <li><strong>Color:</strong> <span style="color:var(--red)">RED</span> for power shots &nbsp;|&nbsp; <span style="color:var(--cyan)">CYAN</span> for placement &nbsp;|&nbsp; <span style="color:var(--green)">GREEN</span> for legal moves</li>
+      <li>Add animated ball traveling along the path after line draws</li>
+    </ul>
+  </div>
+
+  <h3>3D Wireframe / Anatomy Figure</h3>
+  <div class="card">
+    <ul>
+      <li><strong>Style:</strong> Glowing skeleton/muscular figure on black background</li>
+      <li><strong>Usage:</strong> Opening 1–2 seconds as pattern interrupt</li>
+      <li><strong>Color:</strong> Neon pink/magenta wireframe lines</li>
+      <li><strong>Animation:</strong> Subtle rotation or "breathing" pulse</li>
+      <li><strong>Purpose:</strong> Makes content look "gamified" — like a video game special move</li>
+    </ul>
+  </div>
+
+  <h3>Split-Screen Comparisons</h3>
+  <div class="card">
+    <ul>
+      <li><strong>Layout:</strong> 50/50 vertical split</li>
+      <li><strong>Labels:</strong> <span style="color:var(--red)">"WRONG"</span> (red) left &nbsp;|&nbsp; <span style="color:var(--green)">"RIGHT"</span> (green) right</li>
+      <li><strong>Alt:</strong> "Before" vs "After" with colored borders</li>
+      <li><strong>Transition:</strong> Wipe from left to right, synced to audio beat</li>
+    </ul>
+  </div>
+
+  <h3>Visual Mode Switching <span style="font-size:0.75rem;color:var(--red);font-weight:700;">CRITICAL — viral videos switch 5–7 modes per 30s</span></h3>
+  <div class="callout callout-cyan">
+    <p><strong>The 7 visual modes:</strong></p>
+    <ol style="margin:0.5rem 0 0 1.2rem;">
+      <li>3D animation / wireframe</li>
+      <li>Talking head (medium shot)</li>
+      <li>Wide court demonstration</li>
+      <li>Close-up (hands / feet / paddle)</li>
+      <li>Slow-motion replay</li>
+      <li>Tactical top-down diagram</li>
+      <li>Text / rule citation overlay</li>
+    </ol>
+  </div>
+
+  <h3>Audio-Visual Sync Rules</h3>
+  <div class="card">
+    <ul>
+      <li>Text pops appear exactly on <strong>vocal stress points</strong></li>
+      <li>Trajectory lines draw on paddle-contact "thwack" sound</li>
+      <li>Music beat drops align with visual transitions</li>
+      <li>Jump cuts happen on <strong>downbeats</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PART 2B: INFOGRAPHIC EDITING -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="infographic-editing">
+  <h2 class="section-title"><span class="num">3</span> Infographic Animation Patterns</h2>
+  <p class="section-desc">Design system, layouts, and animation timelines for 5-second infographic reels.</p>
+
+  <h3>Layout Options <span class="tag tag-info">All proven 119K+</span></h3>
+  <div class="layout-grid">
+    <div class="layout-card">
+      <h4>Layout 1: 2×2 Grid</h4>
+      <div class="views-tag">245K, 182K</div>
+      <pre>
+┌──────────────────┐
+│   HOOK HEADLINE  │
+├────────┬─────────┤
+│ Tip 1  │  Tip 2  │
+│[diagram] [diagram]│
+├────────┼─────────┤
+│ Tip 3  │  Tip 4  │
+│[diagram] [diagram]│
+└────────┴─────────┘</pre>
+    </div>
+    <div class="layout-card">
+      <h4>Layout 2: Vertical Stack</h4>
+      <div class="views-tag">192K, 153K, 148K, 140K</div>
+      <pre>
+┌──────────────────┐
+│   HOOK HEADLINE  │
+├──────────────────┤
+│[border] Tip 1    │
+├──────────────────┤
+│[border] Tip 2    │
+├──────────────────┤
+│[border] Tip 3    │
+├──────────────────┤
+│[border] Tip 4    │
+└──────────────────┘</pre>
+    </div>
+    <div class="layout-card">
+      <h4>Layout 3: T-Header Grid</h4>
+      <div class="views-tag">159K</div>
+      <pre>
+┌──────────────────┐
+│   HOOK HEADLINE  │
+├────┬────┬────┬───┤
+│ T1 │ T2 │ T3 │T4 │
+│ T5 │    │    │   │
+└────┴────┴────┴───┘</pre>
+    </div>
+    <div class="layout-card">
+      <h4>Layout 4: Problem→Strategy</h4>
+      <div class="views-tag">119K</div>
+      <pre>
+┌──────────────────┐
+│ THE PROBLEM (red)│
+├──────────────────┤
+│THE STRATEGY (blu)│
+├──────────────────┤
+│THE EXECUTION(grn)│
+├──────────────────┤
+│  SHOT GUIDE      │
+└──────────────────┘</pre>
+    </div>
+  </div>
+
+  <h3>Color System</h3>
+  <div class="card card-accent">
+    <table>
+      <tbody>
+        <tr><td><strong>Background</strong></td><td>Pure black or deep navy</td><td><code>#000000</code> / <code>#1a1e26</code></td></tr>
+        <tr><td><strong style="color:var(--cyan)">Primary — Neon Cyan</strong></td><td>Court lines, positive elements</td><td><code>#00FFFF</code></td></tr>
+        <tr><td><strong style="color:var(--orange)">Secondary — Neon Orange</strong></td><td>Warnings, power, action</td><td><code>#FF4500</code></td></tr>
+        <tr><td><strong style="color:var(--green)">Tertiary — Neon Green</strong></td><td>Correct actions, solutions</td><td><code>#00FF00</code></td></tr>
+        <tr><td><strong>Text</strong></td><td>Body (white), headers (colored)</td><td><code>#FFFFFF</code></td></tr>
+        <tr><td><strong>Separators</strong></td><td>Neon glow lines (subtle outer-shadow)</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Typography Hierarchy</h3>
+  <table>
+    <thead><tr><th>Level</th><th>Usage</th><th>Size</th><th>Style</th></tr></thead>
+    <tbody>
+      <tr><td>L1</td><td>Hook headline</td><td>48–64pt</td><td>Bold condensed sans-serif, ALL CAPS, white or yellow</td></tr>
+      <tr><td>L2</td><td>Section headers</td><td>24–32pt</td><td>Bold, ALL CAPS, colored per section</td></tr>
+      <tr><td>L3</td><td>Body text</td><td>14–18pt</td><td>Regular weight, white, sentence case</td></tr>
+      <tr><td>L4</td><td>Brand mark</td><td>12pt</td><td>Bottom of frame, subtle</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Graphics Elements</h3>
+  <div class="card">
+    <ul>
+      <li><strong>Court diagrams:</strong> Top-down schematic with neon court lines (NOT photos)</li>
+      <li><strong>Player figures:</strong> White silhouettes (universal, no distraction)</li>
+      <li><strong>Ball trajectories:</strong> Colored arrows with directional heads</li>
+      <li><strong>Target zones:</strong> Glowing circles or "radar blip" effects</li>
+      <li><strong>X marks:</strong> Red — "don't go here" &nbsp;|&nbsp; <strong style="color:var(--green)">Checkmarks:</strong> Green/white — "correct positioning"</li>
+      <li><strong>Perspective lines:</strong> For 3D court depth effect</li>
+    </ul>
+  </div>
+
+  <h3>Animation Timeline Options (5-second infographic)</h3>
+
+  <div class="card card-accent" style="margin-bottom:1rem">
+    <h4 style="color:var(--cyan);font-size:0.95rem;margin-bottom:0.6rem;">Option A: Sequential Reveal <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— best for 4-tip grids</span></h4>
+    <div class="timeline">
+      <div class="timeline-item"><div class="time">0.0 – 1.0s</div><div class="desc">Title SLAMS in (scale 0.9→1.0, elastic ease). Key word FLASHES in accent color.</div></div>
+      <div class="timeline-item"><div class="time">1.0 – 2.0s</div><div class="desc">Section 1 slides in. Court diagram lines DRAW themselves. Arrow animates along path.</div></div>
+      <div class="timeline-item"><div class="time">2.0 – 3.0s</div><div class="desc">Section 2 slides in. Player silhouette POPS into place. Trajectory line draws.</div></div>
+      <div class="timeline-item"><div class="time">3.0 – 4.0s</div><div class="desc">Section 3 slides in. X/checkmark icons bounce in (overshoot ease).</div></div>
+      <div class="timeline-item"><div class="time">4.0 – 5.0s</div><div class="desc">Section 4 slides in. Brand logo fades in. Subtle pulse on key element → LOOP.</div></div>
+    </div>
+  </div>
+
+  <div class="card card-orange" style="margin-bottom:1rem">
+    <h4 style="color:var(--orange);font-size:0.95rem;margin-bottom:0.6rem;">Option B: Stagger Pop <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— best for 5+ tips, beat-synced</span></h4>
+    <div class="formula">
+      0.0s: Title appears with glitch/RGB-split effect<br>
+      0.5s: Tip 1 POPS (synced to beat drop)<br>
+      1.0s: Tip 2 POPS<br>
+      1.5s: Tip 3 POPS<br>
+      2.0s: Tip 4 POPS<br>
+      2.5s: Tip 5 POPS<br>
+      3.0–5.0s: All visible — subtle glow pulses, gauge fills, arrow shimmers
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <h4 style="color:var(--white);font-size:0.95rem;margin-bottom:0.6rem;">Option C: Diagram Build <span style="font-weight:400;color:var(--muted);font-size:0.8rem;">— best for single-concept deep dives</span></h4>
+    <div class="formula">
+      0.0–1.5s: Title + subtitle fade in<br>
+      1.5–3.5s: Court diagram DRAWS itself: court lines → silhouettes → ball path → target zones<br>
+      3.5–5.0s: Body text fades in, key stats count up, brand anchor appears
+    </div>
+  </div>
+
+  <h3>Animation Techniques Cheat Sheet</h3>
+  <div class="pattern-grid">
+    <div class="card" style="margin:0">
+      <h4 style="font-size:0.85rem;color:var(--cyan);">Stroke / Path Animations</h4>
+      <ul style="font-size:0.85rem;">
+        <li>SVG stroke-dasharray + stroke-dashoffset</li>
+        <li>Duration: 0.6–1.0s per line</li>
+        <li>Easing: ease-out (fast start, gentle stop)</li>
+        <li>Direction: always in direction of ball travel</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="font-size:0.85rem;color:var(--orange);">Text Animations</h4>
+      <ul style="font-size:0.85rem;">
+        <li>Headlines: scale-bounce (0.8→1.05→1.0) elastic</li>
+        <li>Section headers: slide-in from right, 0.3s</li>
+        <li>Body: fade-in with 0.2s delay after header</li>
+        <li>Key words: color flash (white→accent→white) 0.4s</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="font-size:0.85rem;color:var(--green);">Glow / Pulse Effects</h4>
+      <ul style="font-size:0.85rem;">
+        <li>Neon dividers: opacity 0.7→1.0→0.7 over 2s loop</li>
+        <li>Target circles: scale pulse 1.0→1.05→1.0 every 1.5s</li>
+        <li>Court lines: brightness pulse synced to music</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0">
+      <h4 style="font-size:0.85rem;color:var(--yellow);">Background</h4>
+      <ul style="font-size:0.85rem;">
+        <li>Never pure static: slow Ken Burns zoom (102%→100% over 5s)</li>
+        <li>OR: subtle noise/grain overlay (opacity 3–5%)</li>
+        <li>Optional: very slow parallax on separate layers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ANTI-PATTERNS -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="antipatterns">
+  <h2 class="section-title"><span class="num">4</span> Anti-Patterns — What Kills Videos</h2>
+  <p class="section-desc">From our flat-performing video analysis. Avoid these at all costs.</p>
+
+  <div class="anti-grid">
+    <div class="anti-card">
+      <h4>🚫 Visual Anti-Patterns</h4>
+      <ul>
+        <li>Static single-camera angle with no cuts</li>
+        <li>No graphics/overlays — raw footage looks amateur</li>
+        <li>No humans visible (object-only shots = zero engagement)</li>
+        <li>Overcast/gray lighting (dull on phone screens)</li>
+        <li>Cluttered backgrounds competing with subject</li>
+      </ul>
+    </div>
+    <div class="anti-card">
+      <h4>🔇 Audio Anti-Patterns</h4>
+      <ul>
+        <li>High-energy music + low-energy visuals = awkward disconnect</li>
+        <li>No voiceover/instruction = no reason to keep watching</li>
+        <li>Generic royalty-free music that doesn't match energy</li>
+      </ul>
+    </div>
+    <div class="anti-card">
+      <h4>⏱ Pacing Anti-Patterns</h4>
+      <ul>
+        <li>Nothing new after second 2 = immediate scroll-away</li>
+        <li>Repetitive visuals (same frame repeating)</li>
+        <li>No "pattern interrupts" to regain wandering attention</li>
+        <li>Duration >60s without visual mode switches</li>
+      </ul>
+    </div>
+    <div class="anti-card">
+      <h4>🎣 Hook Anti-Patterns</h4>
+      <ul>
+        <li>Cliché/generic text ("Only way you'll get me to leave…")</li>
+        <li>No curiosity gap or payoff promise</li>
+        <li>No specific audience targeting (no skill level, no enemy)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- COMPARISON -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="comparison">
+  <h2 class="section-title"><span class="num">5</span> Content Type Comparison</h2>
+  <p class="section-desc">When to use tutorials vs infographics, and the viral ceiling for each format.</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>Factor</th><th style="color:var(--cyan)">Tutorial (30–45s)</th><th style="color:var(--orange)">Infographic (5s)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Best for</td><td>Technique demos, physics-based explanations</td><td>Strategy/tactics, positioning, rules of thumb</td></tr>
+      <tr><td>View ceiling</td><td style="color:var(--green);font-weight:700">500K+</td><td style="color:var(--green);font-weight:700">245K</td></tr>
+      <tr><td>Production effort</td><td><span style="color:var(--red)">HIGH</span> (filming, 3D, multi-angle)</td><td><span style="color:var(--yellow)">MEDIUM</span> (design + simple animation)</td></tr>
+      <tr><td>Key metric driver</td><td>Watch time + shares</td><td>Saves + loops</td></tr>
+      <tr><td>Algorithm signal</td><td>"People watch all the way through"</td><td>"People save this and loop it 3×"</td></tr>
+      <tr><td>Reusability</td><td>Specific to one technique</td><td>Template-able, batch-producible</td></tr>
+      <tr><td>Best hook type</td><td>"Forbidden weapon" / provocative question</td><td>"Cheat sheet" / level-up promise</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The Viral Ceiling by Format</h3>
+  <div class="ceiling">
+    <div class="ceiling-row">
+      <div class="ceiling-label" style="color:var(--red)">500K+</div>
+      <div class="ceiling-bar" style="width:100%;background:linear-gradient(90deg,var(--red),var(--orange))"></div>
+      <span>Tutorials with 3D graphics + "forbidden" hook</span>
+    </div>
+    <div class="ceiling-row">
+      <div class="ceiling-label" style="color:var(--orange)">245K</div>
+      <div class="ceiling-bar" style="width:49%;background:var(--orange)"></div>
+      <span>Best infographic (dense 2×2 grid)</span>
+    </div>
+    <div class="ceiling-row">
+      <div class="ceiling-label" style="color:var(--yellow)">192K</div>
+      <div class="ceiling-bar" style="width:38%;background:var(--yellow)"></div>
+      <span>Average viral infographic</span>
+    </div>
+    <div class="ceiling-row">
+      <div class="ceiling-label" style="color:var(--muted)">149K</div>
+      <div class="ceiling-bar" style="width:30%;background:var(--muted)"></div>
+      <span>Tutorial without 3D (still good editing + hook)</span>
+    </div>
+    <div class="ceiling-row">
+      <div class="ceiling-label" style="color:var(--muted)">119K</div>
+      <div class="ceiling-bar" style="width:24%;background:var(--muted);opacity:0.6"></div>
+      <span>Lowest viral infographic</span>
+    </div>
+    <div class="ceiling-row">
+      <div class="ceiling-label" style="color:var(--red)">0</div>
+      <div class="ceiling-bar" style="width:3%;background:var(--red)"></div>
+      <span>Flat videos (no graphics, no hook, static camera)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- RECIPES -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="recipes">
+  <h2 class="section-title"><span class="num">6</span> Production Recipes</h2>
+  <p class="section-desc">Plug-and-play recipes for our three highest-performing content types.</p>
+
+  <div class="recipe">
+    <div class="recipe-header">
+      <h4>Recipe 1: "The Forbidden Weapon Tutorial"</h4>
+      <span class="target">🎯 200K – 500K</span>
+    </div>
+    <ul class="ingredients">
+      <li>1× controversial/provocative hook claim</li>
+      <li>1× 3D wireframe animation (2–3 seconds)</li>
+      <li>3–5 camera angles of technique demonstration</li>
+      <li>1× trajectory line overlay on ball flight</li>
+      <li>1× slow-motion proof shot</li>
+      <li>Kinetic captions (word-by-word, key words in RED)</li>
+      <li>Trap/electronic music bed</li>
+      <li>Exaggerated paddle "thwack" sound effects</li>
+    </ul>
+    <div class="meta">
+      <span><strong>Timeline:</strong> 30–40 seconds</span>
+      <span><strong>Post:</strong> Tuesday or Friday, evening UTC</span>
+    </div>
+  </div>
+
+  <div class="recipe">
+    <div class="recipe-header">
+      <h4>Recipe 2: "The Cheat Sheet Infographic"</h4>
+      <span class="target">🎯 140K – 245K</span>
+    </div>
+    <ul class="ingredients">
+      <li>1× skill-level targeted hook ("THE 4.0 [TECHNIQUE]")</li>
+      <li>Black background with neon accents (cyan + orange)</li>
+      <li>3–5 tips in grid/stack layout</li>
+      <li>Court diagrams with trajectory arrows</li>
+      <li>White player silhouettes</li>
+      <li>Sequential reveal animation (5 seconds)</li>
+    </ul>
+    <div class="meta">
+      <span><strong>Timeline:</strong> 5 seconds (forces loops)</span>
+      <span><strong>Post:</strong> Any day, evening UTC</span>
+      <span><strong>Batch:</strong> Design template once, swap content per topic</span>
+    </div>
+  </div>
+
+  <div class="recipe">
+    <div class="recipe-header">
+      <h4>Recipe 3: "The Pain Point Fix"</h4>
+      <span class="target">🎯 150K – 180K</span>
+    </div>
+    <ul class="ingredients">
+      <li>1× "WHY YOU [common failure]" hook (red text)</li>
+      <li>B-roll opener (someone else demonstrating the problem)</li>
+      <li>Hard cut to coach explaining</li>
+      <li>"Wrong vs Right" visual comparison</li>
+      <li>Close-up of the specific fix (hands/feet)</li>
+      <li>Benefit statement as closer</li>
+    </ul>
+    <div class="meta">
+      <span><strong>Timeline:</strong> 35–42 seconds</span>
+      <span><strong>Post:</strong> Tuesday or Friday, evening UTC</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- APPENDIX -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="appendix">
+  <h2 class="section-title"><span class="num">7</span> Appendix: Hook Database &amp; Power Words</h2>
+
+  <h3>All Hooks Over 100K Views</h3>
+  <div class="pattern-grid">
+    <div class="card card-accent" style="margin:0">
+      <h4 style="color:var(--cyan);font-size:0.85rem;margin-bottom:0.5rem;">Tutorials</h4>
+      <table>
+        <tbody>
+          <tr><td class="hook-text">"IS THIS THE MOST DISRESPECTFUL SERVE?"</td><td class="views">502K</td></tr>
+          <tr><td class="hook-text">"MOST DISRESPECTFUL SERVE?" + "4 DEADLY SPIN SERVES"</td><td class="views">433K</td></tr>
+          <tr><td class="hook-text">"THIS SERVE DIPS SO LOW PLAYERS THINK IT'S ILLEGAL"</td><td class="views">265K</td></tr>
+          <tr><td class="hook-text">"WHY PLAYERS OVER 50 CAN'T BEAT YOUNGER PLAYERS"</td><td class="views">177K</td></tr>
+          <tr><td class="hook-text">"WHY YOU HIT THE BALL INTO THE NET"</td><td class="views">161K</td></tr>
+          <tr><td class="hook-text">"SPIN SERVES ILLEGAL IN 2026?"</td><td class="views">149K</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card card-orange" style="margin:0">
+      <h4 style="color:var(--orange);font-size:0.85rem;margin-bottom:0.5rem;">Infographics</h4>
+      <table>
+        <tbody>
+          <tr><td class="hook-text">"MASTER THE 4.0 LETHAL RETURN"</td><td class="views">245K</td></tr>
+          <tr><td class="hook-text">"CRUSH THE BANGERS: THE KITCHEN TRAP"</td><td class="views">192K</td></tr>
+          <tr><td class="hook-text">"TACTICAL DINKING: THE ROAD TO 4.0"</td><td class="views">182K</td></tr>
+          <tr><td class="hook-text">"4.0 PICKLEBALL TACTICS" + "WIN WITHOUT DRILLING"</td><td class="views">159K</td></tr>
+          <tr><td class="hook-text">"STOP MAKING THIS SERVE MISTAKE!"</td><td class="views">153K</td></tr>
+          <tr><td class="hook-text">"LEVEL UP: THE 3.5 TO 4.0 SERVING BLUEPRINT"</td><td class="views">148K</td></tr>
+          <tr><td class="hook-text">"3.5 TO 4.0: FORCE A SOFT-GAME DINK BATTLE"</td><td class="views">140K</td></tr>
+          <tr><td class="hook-text">"FORCE THE ERROR: THE 70% POWER RULE"</td><td class="views">119K</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>Word Frequency in Viral Hooks</h3>
+  <table>
+    <thead>
+      <tr><th>Word / Phrase</th><th>Appearances</th><th>Avg Views</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>"4.0" / "3.5 to 4.0"</td><td>6</td><td class="freq-med">178K</td></tr>
+      <tr><td>"SERVE"</td><td>5</td><td class="freq-high">253K</td></tr>
+      <tr><td>"ILLEGAL" / "BANNED"</td><td>3</td><td class="freq-high">305K</td></tr>
+      <tr><td>"DISRESPECTFUL"</td><td>2</td><td class="freq-high">467K</td></tr>
+      <tr><td>"FORCE" / "CRUSH" / "LETHAL"</td><td>4</td><td class="freq-med">174K</td></tr>
+      <tr><td>"THE [named strategy]"</td><td>5</td><td class="freq-med">156K</td></tr>
+      <tr><td>"WHY YOU/PLAYERS"</td><td>2</td><td class="freq-med">169K</td></tr>
+      <tr><td>"MISTAKE" / "ERROR"</td><td>2</td><td>136K</td></tr>
+      <tr><td>"BLUEPRINT" / "RULE"</td><td>3</td><td>139K</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Power Words Ranked by Impact</h3>
+  <div class="card" style="padding:0.8rem 1.2rem;">
+    <div class="tier-row">
+      <div class="tier-label tier-1">Tier 1</div>
+      <div class="tier-words"><strong>DISRESPECTFUL &nbsp;·&nbsp; ILLEGAL &nbsp;·&nbsp; DEADLY</strong></div>
+      <div class="tier-avg">300K+ avg</div>
+    </div>
+    <div class="tier-row">
+      <div class="tier-label tier-2">Tier 2</div>
+      <div class="tier-words"><strong>LETHAL &nbsp;·&nbsp; CRUSH &nbsp;·&nbsp; FORCE &nbsp;·&nbsp; BANNED</strong></div>
+      <div class="tier-avg">150K–300K</div>
+    </div>
+    <div class="tier-row">
+      <div class="tier-label tier-3">Tier 3</div>
+      <div class="tier-words"><strong>MASTER &nbsp;·&nbsp; TACTICAL &nbsp;·&nbsp; BLUEPRINT &nbsp;·&nbsp; MISTAKE &nbsp;·&nbsp; STOP</strong></div>
+      <div class="tier-avg">119K–150K</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer style="text-align:center;padding:2rem;color:var(--muted);font-size:0.8rem;border-top:1px solid var(--border);">
+  @limitlesspickleball &bull; Viral Reels Analysis &bull; Generated June 2026
+</footer>
+
+</body>
+</html>
