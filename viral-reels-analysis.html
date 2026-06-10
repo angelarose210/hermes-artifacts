@@ -572,6 +572,130 @@
   .freq-high { color: var(--red); font-weight: 700; }
   .freq-med { color: var(--orange); font-weight: 600; }
 
+  /* ===== ACTION PLAN ===== */
+  .action-plan-section { margin-bottom: 2.5rem; }
+  .action-plan-section .section-title .num {
+    background: var(--green);
+  }
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+    gap: 1rem;
+    margin: 1.3rem 0 0;
+  }
+  .action-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--green);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,230,118,0.1);
+    border-color: rgba(0,230,118,0.4);
+  }
+  .action-card .action-top {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .action-card .action-num {
+    width: 26px;
+    height: 26px;
+    background: var(--cyan);
+    color: var(--bg);
+    font-weight: 800;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-card .action-icon { font-size: 1.25rem; line-height: 1; }
+  .action-card .action-top .score-badge { margin-left: auto; }
+  .action-card h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: var(--white);
+  }
+  .action-card p {
+    color: var(--muted);
+    font-size: 0.87rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ===== SCORE BADGES ===== */
+  .score-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .score-high { background: rgba(0,230,118,0.15); color: var(--green); border: 1px solid rgba(0,230,118,0.4); }
+  .score-med  { background: rgba(255,214,0,0.13); color: var(--yellow); border: 1px solid rgba(255,214,0,0.4); }
+  .score-low  { background: rgba(255,71,87,0.13); color: var(--red); border: 1px solid rgba(255,71,87,0.4); }
+  .score-avoid{ background: rgba(255,71,87,0.18); color: var(--red); border: 1px solid rgba(255,71,87,0.5); }
+  .score-ref  { background: rgba(0,229,255,0.12); color: var(--cyan); border: 1px solid rgba(0,229,255,0.4); }
+
+  /* ===== COLLAPSIBLE SECTIONS ===== */
+  .section-details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.25s ease;
+  }
+  .section-details[open] { border-color: rgba(0,229,255,0.25); }
+  .section-details > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.1rem 1.4rem;
+    transition: background 0.2s ease;
+  }
+  .section-details > summary::-webkit-details-marker { display: none; }
+  .section-details > summary:hover { background: var(--surface2); }
+  .section-details > summary .section-title {
+    flex: 1;
+    border-bottom: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.25rem;
+  }
+  .section-details > summary::after {
+    content: '▸';
+    color: var(--cyan);
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .section-details[open] > summary {
+    border-bottom: 1px solid var(--border);
+  }
+  .section-details[open] > summary::after {
+    transform: rotate(90deg);
+  }
+  .section-details .details-body {
+    padding: 0.5rem 1.4rem 1.6rem;
+  }
+  .section-details .details-body > h3:first-child,
+  .section-details .details-body > .section-desc:first-child {
+    margin-top: 1rem;
+  }
+
   /* ===== ANIMATIONS ===== */
 
   /* Scroll progress bar */
@@ -793,6 +917,10 @@
     td, th { padding: 0.4rem 0.5rem; }
     .pattern-grid { grid-template-columns: 1fr; }
     .anti-grid { grid-template-columns: 1fr; }
+    .action-grid { grid-template-columns: 1fr; }
+    .section-details > summary { padding: 0.9rem 1rem; gap: 0.5rem; }
+    .section-details > summary .section-title { font-size: 1.05rem; }
+    .section-details .details-body { padding: 0.5rem 1rem 1.2rem; }
   }
 </style>
 </head>
@@ -813,6 +941,86 @@
 
 <div class="container">
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- ACTION PLAN — "JUST DO THIS" -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="action-plan-section" id="action-plan">
+  <h2 class="section-title"><span class="num">✓</span> The Action Plan — Just Do This</h2>
+  <p class="section-desc">Seven moves, ranked by view impact, distilled from all 15 reels. Run these as tests. Expand any section below for the "why".</p>
+
+  <div class="action-grid">
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">1</span>
+        <span class="action-icon">🚫</span>
+        <span class="score-badge score-high">IMPACT 10/10</span>
+      </div>
+      <h4>Use "Forbidden Weapon" hooks</h4>
+      <p>Frame the technique as so good it should be illegal. "MOST DISRESPECTFUL SERVE?" hit 502K. Forbidden/illegal framing carried every 265K–502K tutorial.</p>
+    </div>
+
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">2</span>
+        <span class="action-icon">🔪</span>
+        <span class="score-badge score-high">IMPACT 10/10</span>
+      </div>
+      <h4>Load hooks with power words</h4>
+      <p>DISRESPECTFUL, ILLEGAL, DEADLY average 300K+. Drop generic verbs entirely — "How to improve" is death.</p>
+    </div>
+
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">3</span>
+        <span class="action-icon">📐</span>
+        <span class="score-badge score-high">IMPACT 9/10</span>
+      </div>
+      <h4>Draw trajectory lines</h4>
+      <p>The money shot — present in ALL 265K+ videos. Glowing red/cyan line drawn on the paddle-contact "thwack".</p>
+    </div>
+
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">4</span>
+        <span class="action-icon">🎬</span>
+        <span class="score-badge score-high">IMPACT 9/10</span>
+      </div>
+      <h4>Switch visual modes 5–7×</h4>
+      <p>Viral tutorials change modes every few seconds across 30s: 3D, talking head, close-up, slow-mo, top-down, overlay.</p>
+    </div>
+
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">5</span>
+        <span class="action-icon">🎯</span>
+        <span class="score-badge score-high">IMPACT 8/10</span>
+      </div>
+      <h4>Target a skill-level number</h4>
+      <p>"4.0", "3.5 to 4.0" appears in 6 of 8 top infographic hooks. Intermediate players feel "this is FOR ME."</p>
+    </div>
+
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">6</span>
+        <span class="action-icon">🧊</span>
+        <span class="score-badge score-high">IMPACT 8/10</span>
+      </div>
+      <h4>Open with a 3D wireframe</h4>
+      <p>A 1–2s glowing anatomy/skeleton pattern interrupt makes content look gamified — like a video game special move.</p>
+    </div>
+
+    <div class="action-card">
+      <div class="action-top">
+        <span class="action-num">7</span>
+        <span class="action-icon">💬</span>
+        <span class="score-badge score-high">IMPACT 8/10</span>
+      </div>
+      <h4>Add kinetic captions</h4>
+      <p>Word-by-word Hormozi-style captions, key words in RED, cyan for technique names, popped in on vocal stress points.</p>
+    </div>
+  </div>
+</section>
+
 <!-- TOC -->
 <nav class="toc">
   <h2>Contents</h2>
@@ -831,11 +1039,16 @@
 <!-- PART 1: HOOKS -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="hooks">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">1</span> Hook Patterns &amp; Formulas</h2>
+  <span class="score-badge score-high">IMPACT 10/10</span>
+  </summary>
+  <div class="details-body">
   <p class="section-desc">The opening 1–3 seconds determine everything. Here's what's proven to work.</p>
 
   <!-- Tutorial Hooks -->
-  <h3>Tutorial Hooks <span class="tag tag-tutorial">30–45s &bull; 150K–502K</span></h3>
+  <h3>Tutorial Hooks <span class="tag tag-tutorial">30–45s &bull; 150K–502K</span> <span class="score-badge score-high">10/10</span></h3>
   <p style="color:var(--muted);margin-bottom:0.8rem;font-size:0.92rem;">Framework: <strong style="color:var(--yellow)">"The Forbidden Weapon"</strong> — Every viral tutorial uses the same psychological structure.</p>
 
   <table class="hook-table">
@@ -908,7 +1121,7 @@
   </div>
 
   <!-- Infographic Hooks -->
-  <h3>Infographic Hooks <span class="tag tag-info">5s &bull; 119K–245K</span></h3>
+  <h3>Infographic Hooks <span class="tag tag-info">5s &bull; 119K–245K</span> <span class="score-badge score-med">8/10</span></h3>
   <p style="color:var(--muted);margin-bottom:0.8rem;font-size:0.92rem;">Framework: <strong style="color:var(--yellow)">"The Cheat Sheet Promise"</strong></p>
 
   <table class="hook-table">
@@ -1027,13 +1240,20 @@
       <p style="font-size:0.88rem;color:var(--muted)">Lo-fi beat + authoritative voiceover starting immediately (no dead air)</p>
     </div>
   </div>
+  </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
 <!-- PART 2: EDITING TIPS -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="editing">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">2</span> Tutorial Editing Patterns</h2>
+  <span class="score-badge score-high">IMPACT 9/10</span>
+  </summary>
+  <div class="details-body">
   <p class="section-desc">Structure, text systems, trajectory lines, and visual mode switching from our top performers.</p>
 
   <h3>Tutorial Video Structure (30–45 seconds)</h3>
@@ -1123,13 +1343,20 @@
       <li>Jump cuts happen on <strong>downbeats</strong></li>
     </ul>
   </div>
+  </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
 <!-- PART 2B: INFOGRAPHIC EDITING -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="infographic-editing">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">3</span> Infographic Animation Patterns</h2>
+  <span class="score-badge score-med">IMPACT 8/10</span>
+  </summary>
+  <div class="details-body">
   <p class="section-desc">Design system, layouts, and animation timelines for 5-second infographic reels.</p>
 
   <h3>Layout Options <span class="tag tag-info">All proven 119K+</span></h3>
@@ -1300,13 +1527,20 @@
       </ul>
     </div>
   </div>
+  </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
 <!-- ANTI-PATTERNS -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="antipatterns">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">4</span> Anti-Patterns — What Kills Videos</h2>
+  <span class="score-badge score-avoid">⚠ AVOID</span>
+  </summary>
+  <div class="details-body">
   <p class="section-desc">From our flat-performing video analysis. Avoid these at all costs.</p>
 
   <div class="anti-grid">
@@ -1346,13 +1580,20 @@
       </ul>
     </div>
   </div>
+  </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
 <!-- COMPARISON -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="comparison">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">5</span> Content Type Comparison</h2>
+  <span class="score-badge score-ref">REFERENCE</span>
+  </summary>
+  <div class="details-body">
   <p class="section-desc">When to use tutorials vs infographics, and the viral ceiling for each format.</p>
 
   <table class="compare-table">
@@ -1403,19 +1644,27 @@
       <span>Flat videos (no graphics, no hook, static camera)</span>
     </div>
   </div>
+  </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
 <!-- RECIPES -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="recipes">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">6</span> Production Recipes</h2>
+  <span class="score-badge score-high">IMPACT 9/10</span>
+  </summary>
+  <div class="details-body">
   <p class="section-desc">Plug-and-play recipes for our three highest-performing content types.</p>
 
   <div class="recipe">
     <div class="recipe-header">
       <h4>Recipe 1: "The Forbidden Weapon Tutorial"</h4>
       <span class="target">🎯 200K – 500K</span>
+      <span class="score-badge score-high">9/10</span>
     </div>
     <ul class="ingredients">
       <li>1× controversial/provocative hook claim</li>
@@ -1437,6 +1686,7 @@
     <div class="recipe-header">
       <h4>Recipe 2: "The Cheat Sheet Infographic"</h4>
       <span class="target">🎯 140K – 245K</span>
+      <span class="score-badge score-med">7/10</span>
     </div>
     <ul class="ingredients">
       <li>1× skill-level targeted hook ("THE 4.0 [TECHNIQUE]")</li>
@@ -1457,6 +1707,7 @@
     <div class="recipe-header">
       <h4>Recipe 3: "The Pain Point Fix"</h4>
       <span class="target">🎯 150K – 180K</span>
+      <span class="score-badge score-med">7/10</span>
     </div>
     <ul class="ingredients">
       <li>1× "WHY YOU [common failure]" hook (red text)</li>
@@ -1471,13 +1722,20 @@
       <span><strong>Post:</strong> Tuesday or Friday, evening UTC</span>
     </div>
   </div>
+  </div>
+  </details>
 </section>
 
 <!-- ═══════════════════════════════════════════ -->
 <!-- APPENDIX -->
 <!-- ═══════════════════════════════════════════ -->
 <section id="appendix">
+  <details class="section-details">
+  <summary>
   <h2 class="section-title"><span class="num">7</span> Appendix: Hook Database &amp; Power Words</h2>
+  <span class="score-badge score-ref">REFERENCE</span>
+  </summary>
+  <div class="details-body">
 
   <h3>All Hooks Over 100K Views</h3>
   <div class="pattern-grid">
@@ -1547,6 +1805,8 @@
       <div class="tier-avg">119K–150K</div>
     </div>
   </div>
+  </div>
+  </details>
 </section>
 
 </div>
